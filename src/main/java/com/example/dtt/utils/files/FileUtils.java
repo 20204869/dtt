@@ -1,6 +1,6 @@
 package com.example.dtt.utils.files;
 
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.utils.DateUtils;
 import com.example.dtt.utils.StringUtils;
 import com.example.dtt.utils.uuid.IdUtils;
@@ -65,7 +65,7 @@ public class FileUtils
      */
     public static String writeImportBytes(byte[] data) throws IOException
     {
-        return writeBytes(data, RuoYiConfig.getImportPath());
+        return writeBytes(data, DttConfig.getImportPath());
     }
 
     /**

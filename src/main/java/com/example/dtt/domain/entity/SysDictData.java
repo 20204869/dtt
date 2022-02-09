@@ -18,9 +18,6 @@ public class SysDictData extends BaseEntity
     /** 字典编码 */
     private Long dictCode;
 
-    /** 字典排序 */
-    private Long dictSort;
-
     /** 字典标签 */
     private String dictLabel;
 
@@ -50,16 +47,6 @@ public class SysDictData extends BaseEntity
     public void setDictCode(Long dictCode)
     {
         this.dictCode = dictCode;
-    }
-
-    public Long getDictSort()
-    {
-        return dictSort;
-    }
-
-    public void setDictSort(Long dictSort)
-    {
-        this.dictSort = dictSort;
     }
 
     @NotBlank(message = "字典标签不能为空")
@@ -148,7 +135,6 @@ public class SysDictData extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("dictCode", getDictCode())
-            .append("dictSort", getDictSort())
             .append("dictLabel", getDictLabel())
             .append("dictValue", getDictValue())
             .append("dictType", getDictType())

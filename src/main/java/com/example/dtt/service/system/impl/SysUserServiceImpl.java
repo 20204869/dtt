@@ -14,7 +14,6 @@ import com.example.dtt.service.system.ISysUserService;
 import com.example.dtt.utils.SecurityUtils;
 import com.example.dtt.utils.SpringUtils;
 import com.example.dtt.utils.StringUtils;
-import com.example.dtt.utils.bean.BeanValidators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -180,7 +178,7 @@ public class SysUserServiceImpl implements ISysUserService
     public String checkPhoneUnique(SysUser user)
     {
         Long userId = StringUtils.isNull(user.getUserId()) ? -1L : user.getUserId();
-        SysUser info = userMapper.checkPhoneUnique(user.getPhonenumber());
+        SysUser info = userMapper.checkPhoneUnique(user.getPhoneNumber());
         if (StringUtils.isNotNull(info) && info.getUserId().longValue() != userId.longValue())
         {
             return UserConstants.NOT_UNIQUE;
@@ -496,7 +494,7 @@ public class SysUserServiceImpl implements ISysUserService
      */
     @Override
     public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName)
-    {/*
+    {
         if (StringUtils.isNull(userList) || userList.size() == 0)
         {
             throw new ServiceException("导入用户数据不能为空！");
@@ -514,7 +512,7 @@ public class SysUserServiceImpl implements ISysUserService
                 SysUser u = userMapper.selectUserByUserName(user.getUserName());
                 if (StringUtils.isNull(u))
                 {
-                    BeanValidators.validateWithException(validator, user);
+                   // BeanValidators.validateWithException(validator, user);
                     user.setPassword(SecurityUtils.encryptPassword(password));
                     user.setCreateBy(operName);
                     this.insertUser(user);
@@ -523,7 +521,7 @@ public class SysUserServiceImpl implements ISysUserService
                 }
                 else if (isUpdateSupport)
                 {
-                    BeanValidators.validateWithException(validator, user);
+                   // BeanValidators.validateWithException(validator, user);
                     user.setUpdateBy(operName);
                     this.updateUser(user);
                     successNum++;
@@ -552,7 +550,6 @@ public class SysUserServiceImpl implements ISysUserService
         {
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
-        return successMsg.toString();*/
-        return "";
+        return successMsg.toString();
     }
 }

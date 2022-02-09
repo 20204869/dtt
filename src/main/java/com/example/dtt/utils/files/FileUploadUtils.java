@@ -1,6 +1,6 @@
 package com.example.dtt.utils.files;
 
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.Constants;
 import com.example.dtt.exception.file.FileNameLengthLimitExceededException;
 import com.example.dtt.exception.file.FileSizeLimitExceededException;
@@ -32,7 +32,7 @@ public class FileUploadUtils
     /**
      * 默认上传的地址
      */
-    private static String defaultBaseDir = RuoYiConfig.getProfile();
+    private static String defaultBaseDir = DttConfig.getProfile();
 
     public static void setDefaultBaseDir(String defaultBaseDir)
     {
@@ -142,7 +142,7 @@ public class FileUploadUtils
 
     public static final String getPathFileName(String uploadDir, String fileName) throws IOException
     {
-        int dirLastIndex = RuoYiConfig.getProfile().length() + 1;
+        int dirLastIndex = DttConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
         String pathFileName = Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
         return pathFileName;

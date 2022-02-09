@@ -2,7 +2,7 @@ package com.example.dtt.utils.poi;
 
 import com.example.dtt.annotation.Excel;
 import com.example.dtt.annotation.Excels;
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.domain.AjaxResult;
 import com.example.dtt.exception.UtilException;
 import com.example.dtt.utils.DateUtils;
@@ -1053,7 +1053,7 @@ public class ExcelUtil<T>
      */
     public String getAbsoluteFile(String filename)
     {
-        String downloadPath = RuoYiConfig.getDownloadPath() + filename;
+        String downloadPath = DttConfig.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists())
         {

@@ -49,7 +49,7 @@ public class SysDeptController extends BaseController
         Iterator<SysDept> it = depts.iterator();
         while (it.hasNext())
         {
-            SysDept d = (SysDept) it.next();
+            SysDept d = it.next();
             if (d.getDeptId().intValue() == deptId
                     || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""))
             {

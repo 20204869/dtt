@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
  * 读取项目相关配置
  */
 @Component
-@ConfigurationProperties(prefix = "dtt")
-public class RuoYiConfig
+@ConfigurationProperties(prefix = "datamanager")
+public class DttConfig
 {
     /** 项目名称 */
     private String name;
@@ -65,7 +65,7 @@ public class RuoYiConfig
 
     public void setProfile(String profile)
     {
-        RuoYiConfig.profile = profile;
+        DttConfig.profile = profile;
     }
 
     public static boolean isAddressEnabled()
@@ -75,7 +75,7 @@ public class RuoYiConfig
 
     public void setAddressEnabled(boolean addressEnabled)
     {
-        RuoYiConfig.addressEnabled = addressEnabled;
+        DttConfig.addressEnabled = addressEnabled;
     }
 
     public static String getCaptchaType() {
@@ -83,7 +83,7 @@ public class RuoYiConfig
     }
 
     public void setCaptchaType(String captchaType) {
-        RuoYiConfig.captchaType = captchaType;
+        DttConfig.captchaType = captchaType;
     }
 
     /**

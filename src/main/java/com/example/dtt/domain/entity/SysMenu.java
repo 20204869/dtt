@@ -29,9 +29,6 @@ public class SysMenu extends BaseEntity
     /** 父菜单ID */
     private Long parentId;
 
-    /** 显示顺序 */
-    private Integer orderNum;
-
     /** 路由地址 */
     private String path;
 
@@ -105,17 +102,6 @@ public class SysMenu extends BaseEntity
     public void setParentId(Long parentId)
     {
         this.parentId = parentId;
-    }
-
-    @NotNull(message = "显示顺序不能为空")
-    public Integer getOrderNum()
-    {
-        return orderNum;
-    }
-
-    public void setOrderNum(Integer orderNum)
-    {
-        this.orderNum = orderNum;
     }
 
     @Size(min = 0, max = 200, message = "路由地址不能超过200个字符")
@@ -238,7 +224,6 @@ public class SysMenu extends BaseEntity
             .append("menuId", getMenuId())
             .append("menuName", getMenuName())
             .append("parentId", getParentId())
-            .append("orderNum", getOrderNum())
             .append("path", getPath())
             .append("component", getComponent())
             .append("isFrame", getIsFrame())

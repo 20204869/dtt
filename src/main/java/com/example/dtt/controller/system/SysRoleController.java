@@ -52,16 +52,6 @@ public class SysRoleController extends BaseController
         return getDataTable(list);
     }
 
-    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
-    @PreAuthorize("@ss.hasPermi('system:role:export')")
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, SysRole role)
-    {
-        List<SysRole> list = roleService.selectRoleList(role);
-        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-        util.exportExcel(response, list, "角色数据");
-    }
-
     /**
      * 根据角色编号获取详细信息
      */
@@ -233,5 +223,20 @@ public class SysRoleController extends BaseController
     {
         roleService.checkRoleDataScope(roleId);
         return toAjax(roleService.insertAuthUsers(roleId, userIds));
+    }
+
+    /**
+     * 导出角色信息
+     * @param response
+     * @param role
+     */
+    @Log(title = "角色管理", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('system:role:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, SysRole role)
+    {
+        List<SysRole> list = roleService.selectRoleList(role);
+        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
+        util.exportExcel(response, list, "角色数据");
     }
 }

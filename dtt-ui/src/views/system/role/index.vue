@@ -7,7 +7,7 @@
           placeholder="请输入角色名称"
           clearable
           size="small"
-          style="width: 240px"
+          style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -17,7 +17,7 @@
           placeholder="请输入权限字符"
           clearable
           size="small"
-          style="width: 240px"
+          style="width: 200px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
@@ -27,7 +27,7 @@
           placeholder="角色状态"
           clearable
           size="small"
-          style="width: 240px"
+          style="width: 200px"
         >
           <el-option
             v-for="dict in dict.type.sys_normal_disable"
@@ -41,7 +41,7 @@
         <el-date-picker
           v-model="dateRange"
           size="small"
-          style="width: 240px"
+          style="width: 200px"
           value-format="yyyy-MM-dd"
           type="daterange"
           range-separator="-"
@@ -88,7 +88,7 @@
           v-hasPermi="['system:role:remove']"
         >删除</el-button>
       </el-col>
-      <el-col :span="1.5">
+      <!--<el-col :span="1.5">
         <el-button
           type="warning"
           plain
@@ -97,17 +97,16 @@
           @click="handleExport"
           v-hasPermi="['system:role:export']"
         >导出</el-button>
-      </el-col>
+      </el-col>-->
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="roleList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="角色编号" prop="roleId" width="120" />
-      <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true" width="150" />
-      <el-table-column label="显示顺序" prop="roleSort" width="100" />
-      <el-table-column label="状态" align="center" width="100">
+      <el-table-column label="编号" prop="roleId"/>
+      <el-table-column label="角色名称" prop="roleName" :show-overflow-tooltip="true"/>
+      <el-table-column label="权限字符" prop="roleKey" :show-overflow-tooltip="true"/>
+      <el-table-column label="状态" align="center">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.status"
@@ -117,9 +116,16 @@
           ></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+    <el-table-column label="创建人" prop="createBy" :show-overflow-tooltip="true"/>
+      <el-table-column label="更新人" prop="updateBy" :show-overflow-tooltip="true"/>
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+    <el-table-column label="更新时间" align="center" prop="updateTime">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -175,9 +181,6 @@
             权限字符
           </span>
           <el-input v-model="form.roleKey" placeholder="请输入权限字符" />
-        </el-form-item>
-        <el-form-item label="角色顺序" prop="roleSort">
-          <el-input-number v-model="form.roleSort" controls-position="right" :min="0" />
         </el-form-item>
         <el-form-item label="状态">
           <el-radio-group v-model="form.status">

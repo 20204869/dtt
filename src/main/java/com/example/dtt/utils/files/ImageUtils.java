@@ -1,6 +1,6 @@
 package com.example.dtt.utils.files;
 
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.Constants;
 import com.example.dtt.utils.StringUtils;
 import org.apache.poi.util.IOUtils;
@@ -79,7 +79,7 @@ public class ImageUtils
             else
             {
                 // 本机地址
-                String localPath = RuoYiConfig.getProfile();
+                String localPath = DttConfig.getProfile();
                 String downloadPath = localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
                 in = new FileInputStream(downloadPath);
             }

@@ -1,7 +1,7 @@
 package com.example.dtt.utils.ip;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.Constants;
 import com.example.dtt.utils.StringUtils;
 import com.example.dtt.utils.http.HttpUtils;
@@ -29,7 +29,7 @@ public class AddressUtils
         {
             return "内网IP";
         }
-        if (RuoYiConfig.isAddressEnabled())
+        if (DttConfig.isAddressEnabled())
         {
             try
             {

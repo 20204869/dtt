@@ -57,20 +57,21 @@
       :default-expand-all="isExpandAll"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" width="160"></el-table-column>
-      <el-table-column prop="icon" label="图标" align="center" width="100">
+      <el-table-column prop="menuName" label="菜单名称" :show-overflow-tooltip="true" ></el-table-column>
+      <!--<el-table-column prop="icon" label="图标" align="center">
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon" />
         </template>
       </el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
+      <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>-->
       <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column prop="status" label="状态" width="80">
+      <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
+      <el-table-column prop="createBy" label="创建人" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -78,7 +79,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button 
+          <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
@@ -127,11 +128,12 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-if="form.menuType != 'F'">
+
+          <el-col :span="12" v-if="form.menuType != 'F'">
             <el-form-item label="菜单图标" prop="icon">
               <el-popover
                 placement="bottom-start"
-                width="460"
+                width="400"
                 trigger="click"
                 @show="$refs['iconSelect'].reset()"
               >
@@ -149,14 +151,36 @@
               </el-popover>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+        <el-col :span="12">
             <el-form-item label="菜单名称" prop="menuName">
               <el-input v-model="form.menuName" placeholder="请输入菜单名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="显示排序" prop="orderNum">
-              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
+            <el-form-item label="权限标识" prop="perms">
+              <el-input v-model="form.perms" placeholder="请输入权限标识"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+           <el-form-item prop="component">
+              <span slot="label">
+                <el-tooltip content="父菜单/子菜单/index(PS:前端界面访问文件夹路径)" placement="top">
+                <i class="el-icon-question"></i>
+                </el-tooltip>
+                组件路径
+              </span>
+            <el-input v-model="form.component" placeholder="请输入组件路径"/>
+            </el-form-item>
+         </el-col>
+          <el-col :span="12" v-if="form.menuType != 'F'">
+            <el-form-item prop="path">
+              <span slot="label">
+                <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
+                <i class="el-icon-question"></i>
+                </el-tooltip>
+                路由地址
+              </span>
+              <el-input v-model="form.path" placeholder="请输入路由地址" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="form.menuType != 'F'">
@@ -171,17 +195,6 @@
                 <el-radio label="0">是</el-radio>
                 <el-radio label="1">否</el-radio>
               </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="form.menuType != 'F'">
-            <el-form-item prop="path">
-              <span slot="label">
-                <el-tooltip content="访问的路由地址，如：`user`，如外网地址需内链访问则以`http(s)://`开头" placement="top">
-                <i class="el-icon-question"></i>
-                </el-tooltip>
-                路由地址
-              </span>
-              <el-input v-model="form.path" placeholder="请输入路由地址" />
             </el-form-item>
           </el-col>
           <el-col :span="12" v-if="form.menuType == 'C'">
@@ -314,9 +327,6 @@ export default {
       rules: {
         menuName: [
           { required: true, message: "菜单名称不能为空", trigger: "blur" }
-        ],
-        orderNum: [
-          { required: true, message: "菜单顺序不能为空", trigger: "blur" }
         ],
         path: [
           { required: true, message: "路由地址不能为空", trigger: "blur" }

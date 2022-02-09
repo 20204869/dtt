@@ -1,6 +1,6 @@
-package com.example.dtt.controller;
+package com.example.dtt.controller.base;
 
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.Constants;
 import com.example.dtt.datasources.redis.RedisCache;
 import com.example.dtt.domain.AjaxResult;
@@ -59,7 +59,7 @@ public class CaptchaController
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = RuoYiConfig.getCaptchaType();
+        String captchaType = DttConfig.getCaptchaType();
         if ("math".equals(captchaType))
         {
             String capText = captchaProducerMath.createText();

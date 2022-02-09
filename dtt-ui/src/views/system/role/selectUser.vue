@@ -2,7 +2,7 @@
   <!-- 授权用户 -->
   <el-dialog title="选择用户" :visible.sync="visible" width="800px" top="5vh" append-to-body>
     <el-form :model="queryParams" ref="queryForm" :inline="true">
-      <el-form-item label="用户名称" prop="userName">
+      <el-form-item label="账号" prop="userName">
         <el-input
           v-model="queryParams.userName"
           placeholder="请输入用户名称"
@@ -11,15 +11,31 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="手机号码" prop="phonenumber">
+      <el-form-item label="状态" prop="status">
+            <el-select
+              v-model="queryParams.status"
+              placeholder="用户状态"
+              clearable
+              size="small"
+              style="width: 200px"
+            >
+              <el-option
+                v-for="dict in dict.type.sys_normal_disable"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              />
+            </el-select>
+          </el-form-item>
+      <!--<el-form-item label="手机号码" prop="phoneNumber">
         <el-input
-          v-model="queryParams.phonenumber"
+          v-model="queryParams.phoneNumber"
           placeholder="请输入手机号码"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -28,20 +44,20 @@
     <el-row>
       <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange" height="260px">
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
-        <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
-        <el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
-        <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
+        <el-table-column label="账号" prop="userName" :show-overflow-tooltip="true" />
+        <el-table-column label="姓名" prop="nickName" :show-overflow-tooltip="true" />
+        <!--<el-table-column label="邮箱" prop="email" :show-overflow-tooltip="true" />
+        <el-table-column label="手机" prop="phoneNumber" :show-overflow-tooltip="true" />-->
         <el-table-column label="状态" align="center" prop="status">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <!--<el-table-column label="创建时间" align="center" prop="createTime" width="180">
           <template slot-scope="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
-        </el-table-column>
+        </el-table-column>-->
       </el-table>
       <pagination
         v-show="total>0"

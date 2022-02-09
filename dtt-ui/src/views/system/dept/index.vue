@@ -57,16 +57,22 @@
       :default-expand-all="isExpandAll"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
-      <el-table-column prop="status" label="状态" width="100">
+      <el-table-column prop="deptName" label="部门名称"></el-table-column>
+      <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200">
+      <el-table-column prop="createBy" label="创建人"></el-table-column>
+      <el-table-column prop="updateBy" label="更新人"></el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
+    <el-table-column label="更新时间" align="center" prop="updateTime">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -113,11 +119,6 @@
               <el-input v-model="form.deptName" placeholder="请输入部门名称" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="显示排序" prop="orderNum">
-              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
-            </el-form-item>
-          </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
@@ -146,6 +147,13 @@
                   :label="dict.value"
                 >{{dict.label}}</el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="备注">
+              <el-input v-model="form.remark" type="textarea" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -182,7 +190,7 @@ export default {
       // 是否显示弹出层
       open: false,
       // 是否展开，默认全部展开
-      isExpandAll: true,
+      isExpandAll: false,
       // 重新渲染表格状态
       refreshTable: true,
       // 查询参数
@@ -199,9 +207,6 @@ export default {
         ],
         deptName: [
           { required: true, message: "部门名称不能为空", trigger: "blur" }
-        ],
-        orderNum: [
-          { required: true, message: "显示排序不能为空", trigger: "blur" }
         ],
         email: [
           {
@@ -254,7 +259,6 @@ export default {
         deptId: undefined,
         parentId: undefined,
         deptName: undefined,
-        orderNum: undefined,
         leader: undefined,
         phone: undefined,
         email: undefined,

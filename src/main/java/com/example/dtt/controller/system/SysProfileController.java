@@ -1,7 +1,7 @@
 package com.example.dtt.controller.system;
 
 import com.example.dtt.annotation.Log;
-import com.example.dtt.common.config.RuoYiConfig;
+import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.system.UserConstants;
 import com.example.dtt.controller.base.BaseController;
 import com.example.dtt.domain.AjaxResult;
@@ -56,7 +56,7 @@ public class SysProfileController extends BaseController
         LoginUser loginUser = getLoginUser();
         SysUser sysUser = loginUser.getUser();
         user.setUserName(sysUser.getUserName());
-        if (StringUtils.isNotEmpty(user.getPhonenumber())
+        if (StringUtils.isNotEmpty(user.getPhoneNumber())
                 && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
         {
             return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
@@ -72,7 +72,7 @@ public class SysProfileController extends BaseController
         {
             // 更新缓存用户信息
             sysUser.setNickName(user.getNickName());
-            sysUser.setPhonenumber(user.getPhonenumber());
+            sysUser.setPhoneNumber(user.getPhoneNumber());
             sysUser.setEmail(user.getEmail());
             sysUser.setSex(user.getSex());
             tokenService.setLoginUser(loginUser);
@@ -119,7 +119,7 @@ public class SysProfileController extends BaseController
         if (!file.isEmpty())
         {
             LoginUser loginUser = getLoginUser();
-            String avatar = FileUploadUtils.upload(RuoYiConfig.getAvatarPath(), file);
+            String avatar = FileUploadUtils.upload(DttConfig.getAvatarPath(), file);
             if (userService.updateUserAvatar(loginUser.getUsername(), avatar))
             {
                 AjaxResult ajax = AjaxResult.success();
