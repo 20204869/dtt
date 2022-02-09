@@ -1,6 +1,6 @@
 package com.example.dtt.mapper.system;
 
-import com.example.dtt.domain.entity.SysDictType;
+import com.example.dtt.domain.entity.system.SysDictType;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

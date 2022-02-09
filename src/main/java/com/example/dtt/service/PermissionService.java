@@ -1,6 +1,6 @@
 package com.example.dtt.service;
 
-import com.example.dtt.domain.entity.SysRole;
+import com.example.dtt.domain.entity.system.SysRole;
 import com.example.dtt.domain.model.LoginUser;
 import com.example.dtt.utils.SecurityUtils;
 import com.example.dtt.utils.StringUtils;

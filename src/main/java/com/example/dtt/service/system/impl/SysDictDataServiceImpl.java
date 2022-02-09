@@ -1,6 +1,6 @@
 package com.example.dtt.service.system.impl;
 
-import com.example.dtt.domain.entity.SysDictData;
+import com.example.dtt.domain.entity.system.SysDictData;
 import com.example.dtt.mapper.system.SysDictDataMapper;
 import com.example.dtt.service.system.ISysDictDataService;
 import com.example.dtt.utils.DictUtils;

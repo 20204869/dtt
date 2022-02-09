@@ -1,6 +1,6 @@
 package com.example.dtt.service.system;
 
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 
 import java.util.List;
 

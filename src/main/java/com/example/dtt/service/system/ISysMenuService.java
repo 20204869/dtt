@@ -1,7 +1,7 @@
 package com.example.dtt.service.system;
 
 import com.example.dtt.domain.TreeSelect;
-import com.example.dtt.domain.entity.SysMenu;
+import com.example.dtt.domain.entity.system.SysMenu;
 import com.example.dtt.domain.vo.RouterVo;
 
 import java.util.List;

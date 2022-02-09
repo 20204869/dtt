@@ -1,6 +1,8 @@
 package com.example.dtt.utils.poi;
 
 import com.example.dtt.annotation.Excel;
+import com.example.dtt.annotation.Excel.ColumnType;
+import com.example.dtt.annotation.Excel.Type;
 import com.example.dtt.annotation.Excels;
 import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.domain.AjaxResult;
@@ -36,13 +38,11 @@ import java.util.stream.Collectors;
 
 /**
  * Excel相关处理
+ *
  */
 public class ExcelUtil<T>
 {
     private static final Logger log = LoggerFactory.getLogger(ExcelUtil.class);
-
-    public static final String[] FORMULA_STR = { "=", "-", "+", "@" };
-
 
     /**
      * Excel sheet最大行数，默认65536
@@ -57,7 +57,7 @@ public class ExcelUtil<T>
     /**
      * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
      */
-    private Excel.Type type;
+    private Type type;
 
     /**
      * 工作薄对象
@@ -119,7 +119,7 @@ public class ExcelUtil<T>
         this.clazz = clazz;
     }
 
-    public void init(List<T> list, String sheetName, String title, Excel.Type type)
+    public void init(List<T> list, String sheetName, String title, Type type)
     {
         if (list == null)
         {
@@ -184,7 +184,7 @@ public class ExcelUtil<T>
      */
     public List<T> importExcel(String sheetName, InputStream is, int titleNum) throws Exception
     {
-        this.type = Excel.Type.IMPORT;
+        this.type = Type.IMPORT;
         this.wb = WorkbookFactory.create(is);
         List<T> list = new ArrayList<T>();
         // 如果指定sheet名,则取指定sheet中的内容 否则默认指向第1个sheet
@@ -332,7 +332,7 @@ public class ExcelUtil<T>
                         {
                             val = dataFormatHandlerAdapter(val, attr);
                         }
-                        else if (Excel.ColumnType.IMAGE == attr.cellType() && StringUtils.isNotEmpty(pictures))
+                        else if (ColumnType.IMAGE == attr.cellType() && StringUtils.isNotEmpty(pictures))
                         {
                             PictureData image = pictures.get(row.getRowNum() + "_" + entry.getKey());
                             if (image == null)
@@ -376,7 +376,7 @@ public class ExcelUtil<T>
      */
     public AjaxResult exportExcel(List<T> list, String sheetName, String title)
     {
-        this.init(list, sheetName, title, Excel.Type.EXPORT);
+        this.init(list, sheetName, title, Type.EXPORT);
         return exportExcel();
     }
 
@@ -408,7 +408,7 @@ public class ExcelUtil<T>
     {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
-        this.init(list, sheetName, title, Excel.Type.EXPORT);
+        this.init(list, sheetName, title, Type.EXPORT);
         exportExcel(response);
     }
 
@@ -432,7 +432,7 @@ public class ExcelUtil<T>
      */
     public AjaxResult importTemplateExcel(String sheetName, String title)
     {
-        this.init(null, sheetName, title, Excel.Type.IMPORT);
+        this.init(null, sheetName, title, Type.IMPORT);
         return exportExcel();
     }
 
@@ -458,7 +458,7 @@ public class ExcelUtil<T>
     {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
-        this.init(null, sheetName, title, Excel.Type.IMPORT);
+        this.init(null, sheetName, title, Type.IMPORT);
         exportExcel(response);
     }
 
@@ -532,7 +532,7 @@ public class ExcelUtil<T>
                 Excel excel = (Excel) os[1];
                 this.createCell(excel, row, column++);
             }
-            if (Excel.Type.EXPORT.equals(type))
+            if (Type.EXPORT.equals(type))
             {
                 fillExcelData(index, row);
                 addStatisticsRow();
@@ -666,24 +666,18 @@ public class ExcelUtil<T>
      */
     public void setCellVo(Object value, Excel attr, Cell cell)
     {
-        if (Excel.ColumnType.STRING == attr.cellType())
+        if (ColumnType.STRING == attr.cellType())
         {
-            String cellValue = Convert.toStr(value);
-            // 对于任何以表达式触发字符 =-+@开头的单元格，直接使用tab字符作为前缀，防止CSV注入。
-            if (StringUtils.containsAny(cellValue, FORMULA_STR))
-            {
-                cellValue = StringUtils.replaceEach(cellValue, FORMULA_STR, new String[] { "\t=", "\t-", "\t+", "\t@" });
-            }
-            cell.setCellValue(StringUtils.isNull(cellValue) ? attr.defaultValue() : cellValue + attr.suffix());
+            cell.setCellValue(StringUtils.isNull(value) ? attr.defaultValue() : value + attr.suffix());
         }
-        else if (Excel.ColumnType.NUMERIC == attr.cellType())
+        else if (ColumnType.NUMERIC == attr.cellType())
         {
             if (StringUtils.isNotNull(value))
             {
                 cell.setCellValue(StringUtils.contains(Convert.toStr(value), ".") ? Convert.toDouble(value) : Convert.toInt(value));
             }
         }
-        else if (Excel.ColumnType.IMAGE == attr.cellType())
+        else if (ColumnType.IMAGE == attr.cellType())
         {
             ClientAnchor anchor = new XSSFClientAnchor(0, 0, 0, 0, (short) cell.getColumnIndex(), cell.getRow().getRowNum(), (short) (cell.getColumnIndex() + 1), cell.getRow().getRowNum() + 1);
             String imagePath = Convert.toStr(value);
@@ -1138,7 +1132,7 @@ public class ExcelUtil<T>
             if (field.isAnnotationPresent(Excel.class))
             {
                 Excel attr = field.getAnnotation(Excel.class);
-                if (attr != null && (attr.type() == Excel.Type.ALL || attr.type() == type))
+                if (attr != null && (attr.type() == Type.ALL || attr.type() == type))
                 {
                     field.setAccessible(true);
                     fields.add(new Object[] { field, attr });
@@ -1152,7 +1146,7 @@ public class ExcelUtil<T>
                 Excel[] excels = attrs.value();
                 for (Excel attr : excels)
                 {
-                    if (attr != null && (attr.type() == Excel.Type.ALL || attr.type() == type))
+                    if (attr != null && (attr.type() == Type.ALL || attr.type() == type))
                     {
                         field.setAccessible(true);
                         fields.add(new Object[] { field, attr });

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.load.LoadFileMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.load.LoadFile" id="LoadFileResult">
+		<id     property="fileId"       column="file_id"      />
+		<result property="fileName"       column="file_name"      />
+		<result property="filePath"       column="file_path"      />
+		<result property="confId"       column="conf_id"      />
+		<result property="loadUser"        column="load_user"        />
+		<result property="loadTime"   column="load_time"  />
+		<association property="fileConf"    column="conf_id" javaType="com.example.dtt.domain.entity.load.LoadFileConf" resultMap="fileConfResult" />
+	</resultMap>
+
+	<resultMap id="fileConfResult" type="com.example.dtt.domain.entity.load.LoadFileConf">
+		<id     property="confId"   column="conf_id"     />
+		<result property="business" column="business"   />
+		<result property="fileType" column="file_type"   />
+		<result property="hiveTable"   column="hive_table"      />
+		<result property="hdfsPath"   column="hdfs_path" />
+		<result property="tablePrefix" column="table_prefix"   />
+	</resultMap>
+
+	<sql id="selectLoadFileVo">
+		select a.file_id,a.conf_id,a.file_name,a.file_path,b.file_type as file_type,a.load_user,a.load_time,
+		       b.business,b.file_type,b.hive_table,b.hdfs_path,b.table_prefix
+		from sys_load_file a
+		left join sys_load_file_conf b on a.conf_id = b.conf_id
+    </sql>
+
+    <select id="LoadFileList" parameterType="com.example.dtt.domain.entity.load.LoadFile" resultMap="LoadFileResult">
+		<include refid="selectLoadFileVo"/>
+		where a.del_flag = '0'
+		<if test="fileId != null ">
+			AND a.file_id = #{fileId}
+		</if>
+		<if test="fileName != null and fileName != ''">
+			AND  a.file_name like concat('%', #{fileName}, '%')
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			AND date_format(a.load_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			AND date_format(a.load_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<insert id="saveFile" parameterType="com.example.dtt.domain.entity.load.LoadFile">
+ 		insert into sys_load_file(
+ 			<if test="fileId != null">file_id,</if>
+ 			<if test="fileName != null and fileName != ''">file_name,</if>
+			<if test="filePath != null and filePath != ''">file_path,</if>
+			<if test="confId != null">conf_id,</if>
+ 			<if test="loadUser != null and loadUser != ''">load_user,</if>
+		load_time
+ 		)values(
+ 			<if test="fileId != null">#{fileId},</if>
+ 			<if test="fileName != null and fileName != ''">#{fileName},</if>
+			<if test="filePath != null and filePath != ''">#{filePath},</if>
+			<if test="confId != null">#{confId},</if>
+ 			<if test="loadUser != null and loadUser != ''">#{loadUser},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+	<delete id="deleteFileById" parameterType="Long">
+		update sys_load_file set del_flag = '1' where file_id = #{fileId}
+ 	</delete>
+
+ 	<delete id="deleteFileByIds" parameterType="Long">
+ 		update sys_load_file set del_flag = '1' where file_id in
+ 		<foreach collection="array" item="fileId" open="(" separator="," close=")">
+ 			#{fileId}
+        </foreach>
+ 	</delete>
+
+	<select id="loadFilesByIds" parameterType="Long" resultMap="LoadFileResult">
+		select file_name,file_path,load_user,load_time from sys_load_file where del_flag = '0' and file_id in
+		<foreach collection="array" item="fileId" open="(" separator="," close=")">
+			#{fileId}
+		</foreach>
+	</select>
+
+</mapper>

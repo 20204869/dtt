@@ -5,7 +5,7 @@ import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.system.UserConstants;
 import com.example.dtt.controller.base.BaseController;
 import com.example.dtt.domain.AjaxResult;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.model.LoginUser;
 import com.example.dtt.enums.BusinessType;
 import com.example.dtt.service.TokenService;

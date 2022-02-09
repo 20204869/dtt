@@ -1,6 +1,6 @@
 package com.example.dtt.mapper.system;
 
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.dtt.domain.entity;
+package com.example.dtt.domain.entity.system;
 
 import com.example.dtt.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;

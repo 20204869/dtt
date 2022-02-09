@@ -2,8 +2,8 @@ package com.example.dtt.service.system.impl;
 
 import com.example.dtt.annotation.DataScope;
 import com.example.dtt.constant.system.UserConstants;
-import com.example.dtt.domain.entity.SysRole;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysRole;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.system.SysRoleDept;
 import com.example.dtt.domain.system.SysRoleMenu;
 import com.example.dtt.domain.system.SysUserRole;

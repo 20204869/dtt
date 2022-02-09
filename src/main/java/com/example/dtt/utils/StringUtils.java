@@ -8,6 +8,7 @@ import java.util.*;
 
 /**
  * 字符串工具类
+ *
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils
 {
@@ -48,6 +49,55 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
     public static boolean isNotEmpty(Collection<?> coll)
     {
         return !isEmpty(coll);
+    }
+
+    /**
+     * <p>Checks if a CharSequence is empty ("") or null.</p>
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is empty or null
+     */
+    public static boolean isEmpty(final CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    /**
+     * <p>Checks if a CharSequence is not empty ("") and not null.</p>
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null
+     */
+    public static boolean isNotEmpty(final CharSequence cs) {
+        return !isEmpty(cs);
+    }
+
+    /**
+     * <p>Checks if a CharSequence is empty (""), null or whitespace only.</p>
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is null, empty or whitespace only
+     */
+    public static boolean isBlank(final CharSequence cs) {
+        int strLen;
+        if (cs == null || (strLen = cs.length()) == 0) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(cs.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * <p>Checks if a CharSequence is not empty (""), not null and not whitespace only.</p>
+     *
+     * @param cs the CharSequence to check, may be null
+     * @return {@code true} if the CharSequence is not empty and not null and not whitespace only
+     */
+    public static boolean isNotBlank(final CharSequence cs) {
+        return !isBlank(cs);
     }
 
     /**

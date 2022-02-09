@@ -1,6 +1,6 @@
 package com.example.dtt.mapper.system;
 
-import com.example.dtt.domain.entity.SysRole;
+import com.example.dtt.domain.entity.system.SysRole;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.example.dtt.service.system.impl;
 
 import com.example.dtt.constant.system.UserConstants;
-import com.example.dtt.domain.entity.SysDictData;
-import com.example.dtt.domain.entity.SysDictType;
+import com.example.dtt.domain.entity.system.SysDictData;
+import com.example.dtt.domain.entity.system.SysDictType;
 import com.example.dtt.exception.ServiceException;
 import com.example.dtt.mapper.system.SysDictDataMapper;
 import com.example.dtt.mapper.system.SysDictTypeMapper;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

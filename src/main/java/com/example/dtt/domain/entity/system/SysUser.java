@@ -1,4 +1,4 @@
-package com.example.dtt.domain.entity;
+package com.example.dtt.domain.entity.system;
 
 import com.example.dtt.domain.BaseEntity;
 import com.example.dtt.xss.Xss;

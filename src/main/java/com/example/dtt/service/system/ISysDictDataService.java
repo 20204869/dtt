@@ -1,7 +1,7 @@
 package com.example.dtt.service.system;
 
 
-import com.example.dtt.domain.entity.SysDictData;
+import com.example.dtt.domain.entity.system.SysDictData;
 
 import java.util.List;
 

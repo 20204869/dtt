@@ -2,8 +2,8 @@ package com.example.dtt.aspectj;
 
 import com.example.dtt.annotation.DataScope;
 import com.example.dtt.domain.BaseEntity;
-import com.example.dtt.domain.entity.SysRole;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysRole;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.model.LoginUser;
 import com.example.dtt.utils.SecurityUtils;
 import com.example.dtt.utils.StringUtils;

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.load.LoadFileConfMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.load.LoadFileConf" id="LoadFileConfResult">
+		<id     property="confId"       column="conf_id"      />
+		<result property="business"       column="business"      />
+		<result property="fileType"       column="file_type"      />
+		<result property="hiveTable"       column="hive_table"      />
+		<result property="tablePrefix"     column="table_prefix"     />
+		<result property="delFlag"      column="del_flag"     />
+		<result property="hdfsPath"     column="hdfs_path"  />
+		<result property="createBy"     column="create_by"    />
+		<result property="createTime"   column="create_time"  />
+		<result property="updateBy"     column="update_by"    />
+		<result property="updateTime"   column="update_time"  />
+		<result property="remark"       column="remark"       />
+	</resultMap>
+
+	<sql id="selectLoadFileConfVo">
+		SELECT conf_id,business,file_type,table_prefix,hive_table,hdfs_path,create_by,create_time,update_by,update_time,remark FROM sys_load_file_conf
+    </sql>
+
+	<select id="selectConfById" parameterType="Long" resultMap="LoadFileConfResult">
+		<include refid="selectLoadFileConfVo"/>
+		where del_flag = '0' and conf_id = #{confId}
+	</select>
+
+	<select id="getConf" resultMap="LoadFileConfResult">
+		<include refid="selectLoadFileConfVo"/>
+		where del_flag = '0'
+	</select>
+
+    <select id="LoadFileConfList" parameterType="com.example.dtt.domain.entity.load.LoadFileConf" resultMap="LoadFileConfResult">
+		<include refid="selectLoadFileConfVo"/>
+		where del_flag = '0'
+		<if test="confId != null">
+			AND conf_id = #{confId}
+		</if>
+		<if test="business != null and business != ''">
+			AND  business like concat('%', #{business}, '%')
+		</if>
+		<if test="fileType != null and fileType != ''">
+			AND  file_type like concat('%', #{fileType}, '%')
+		</if>
+		<if test="hiveTable != null and hiveTable != ''">
+			AND  hive_table like concat('%', #{hiveTable}, '%')
+		</if>
+		<if test="tablePrefix != null and tablePrefix != ''">
+			AND  table_prefix like concat('%', #{tablePrefix}, '%')
+		</if>
+		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			AND date_format(load_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+		</if>
+		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			AND date_format(load_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+		</if>
+		<!-- 数据范围过滤 -->
+		${params.dataScope}
+	</select>
+
+	<insert id="saveLoadFileConf" parameterType="com.example.dtt.domain.entity.load.LoadFileConf">
+ 		insert into sys_load_file_conf(
+ 			<if test="confId != null">conf_id,</if>
+ 			<if test="business != null and business != ''">business,</if>
+			<if test="hiveTable != null and hiveTable != ''">hive_table,</if>
+			<if test="fileType != null and fileType != ''">file_type,</if>
+			<if test="hdfsPath != null and hdfsPath != ''">hdfs_path,</if>
+ 			<if test="tablePrefix != null and tablePrefix != ''">table_prefix,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+			create_time
+ 		)values(
+ 			<if test="confId != null and confId != 0">#{confId},</if>
+ 			<if test="business != null and business != ''">#{business},</if>
+			<if test="hiveTable != null and hiveTable != ''">#{hiveTable},</if>
+			<if test="fileType != null and fileType != ''">#{fileType},</if>
+ 			<if test="hdfsPath != null and hdfsPath != ''">#{hdfsPath},</if>
+			<if test="tablePrefix != null and tablePrefix != ''">#{tablePrefix},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+	<update id="updateConf" parameterType="com.example.dtt.domain.entity.load.LoadFileConf">
+		update sys_load_file_conf
+		<set>
+			<if test="confId != null">conf_id = #{confId},</if>
+			<if test="business != null and business != ''">business = #{business},</if>
+			<if test="hiveTable != null and hiveTable != ''">hive_table = #{hiveTable},</if>
+			<if test="fileType != null ">file_type = #{fileType},</if>
+			<if test="hdfsPath != null ">hdfs_path = #{hdfsPath},</if>
+			<if test="tablePrefix != null and tablePrefix != ''">table_prefix = #{tablePrefix},</if>
+			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="remark != null">remark = #{remark},</if>
+			update_time = sysdate()
+		</set>
+		where conf_id = #{confId}
+	</update>
+
+	<delete id="deleteConfById" parameterType="Long">
+		update sys_load_file_conf set del_flag = '1' where conf_id = #{confId}
+ 	</delete>
+
+ 	<delete id="deleteConfByIds" parameterType="Long">
+ 		update sys_load_file_conf set del_flag = '1' where conf_id in
+ 		<foreach collection="array" item="confId" open="(" separator="," close=")">
+ 			#{confId}
+        </foreach>
+ 	</delete>
+
+	<select id="checkConfByHdfsPath" parameterType="String" resultType="int">
+		select count(1) from sys_load_file_conf where hive_table = #{hiveTable}
+	</select>
+
+	<select id="checkConfByHiveTable" parameterType="String" resultType="int">
+		select count(1) from sys_load_file_conf where hdfs_path = #{hdfsPath}
+	</select>
+
+</mapper>

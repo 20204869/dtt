@@ -1,7 +1,7 @@
 package com.example.dtt.domain.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

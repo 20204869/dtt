@@ -4,7 +4,7 @@ import com.example.dtt.annotation.Log;
 import com.example.dtt.constant.system.UserConstants;
 import com.example.dtt.controller.base.BaseController;
 import com.example.dtt.domain.AjaxResult;
-import com.example.dtt.domain.entity.SysMenu;
+import com.example.dtt.domain.entity.system.SysMenu;
 import com.example.dtt.enums.BusinessType;
 import com.example.dtt.service.system.ISysMenuService;
 import com.example.dtt.utils.StringUtils;
@@ -14,8 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-import static com.example.dtt.utils.SecurityUtils.getUserId;
 
 /**
  * 菜单信息

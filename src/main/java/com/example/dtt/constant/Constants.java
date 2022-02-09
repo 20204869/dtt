@@ -5,8 +5,19 @@ import io.jsonwebtoken.Claims;
 /**
  * 通用常量信息
  */
-public class Constants
+public final class Constants
 {
+
+    public static final String DATA_REGEX = "((^((1[8-9]\\d{2})|([2-9]\\d{3}))([-\\/\\._])(10|12|0?[13578])([-\\/\\._])(3[01]|[12][0-9]|0?[1-9])$)|(^((1[8-9]\\d{2})|([2-9]\\d{3}))([-\\/\\._])(11|0?[469])([-\\/\\._])(30|[12][0-9]|0?[1-9])$)|(^((1[8-9]\\d{2})|([2-9]\\d{3}))([-\\/\\._])(0?2)([-\\/\\._])(2[0-8]|1[0-9]|0?[1-9])$)|(^([2468][048]00)([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([3579][26]00)([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([1][89][0][48])([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([2-9][0-9][0][48])([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([1][89][2468][048])([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([2-9][0-9][2468][048])([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([1][89][13579][26])([-\\/\\._])(0?2)([-\\/\\._])(29)$)|(^([2-9][0-9][13579][26])([-\\/\\._])(0?2)([-\\/\\._])(29)$))";
+    /**
+     * 第三方接口返回成功code
+     */
+    public static final String SSO_RESULT_CODE="0000";
+    /**
+     * common properties path
+     */
+    public static final String COMMON_PROPERTIES_PATH = "/conf/common.properties";
+
     /**
      * UTF-8 字符集
      */
@@ -140,16 +151,16 @@ public class Constants
     /**
      * RMI 远程方法调用
      */
-    public static final String LOOKUP_RMI = "rmi:";
+    public static final String LOOKUP_RMI = "rmi://";
 
     /**
      * LDAP 远程方法调用
      */
-    public static final String LOOKUP_LDAP = "ldap:";
+    public static final String LOOKUP_LDAP = "ldap://";
 
     /**
-     * LDAPS 远程方法调用
+     * 定时任务违规的字符
      */
-    public static final String LOOKUP_LDAPS = "ldaps:";
-
+    public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
+            "org.springframework.jndi" };
 }

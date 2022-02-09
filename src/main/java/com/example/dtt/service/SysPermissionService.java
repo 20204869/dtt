@@ -1,6 +1,6 @@
 package com.example.dtt.service;
 
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.service.system.ISysMenuService;
 import com.example.dtt.service.system.ISysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;

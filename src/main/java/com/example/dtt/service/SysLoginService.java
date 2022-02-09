@@ -2,7 +2,7 @@ package com.example.dtt.service;
 
 import com.example.dtt.constant.Constants;
 import com.example.dtt.datasources.redis.RedisCache;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.model.LoginUser;
 import com.example.dtt.exception.ServiceException;
 import com.example.dtt.exception.user.CaptchaException;

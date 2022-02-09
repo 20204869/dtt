@@ -2,8 +2,8 @@ package com.example.dtt.controller.system;
 
 import com.example.dtt.constant.Constants;
 import com.example.dtt.domain.AjaxResult;
-import com.example.dtt.domain.entity.SysMenu;
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysMenu;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.model.LoginBody;
 import com.example.dtt.service.SysLoginService;
 import com.example.dtt.service.SysPermissionService;

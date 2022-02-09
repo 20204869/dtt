@@ -1,7 +1,7 @@
 package com.example.dtt.domain;
 
-import com.example.dtt.domain.entity.SysDept;
-import com.example.dtt.domain.entity.SysMenu;
+import com.example.dtt.domain.entity.system.SysDept;
+import com.example.dtt.domain.entity.system.SysMenu;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;

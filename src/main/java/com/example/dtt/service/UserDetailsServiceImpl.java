@@ -1,6 +1,6 @@
 package com.example.dtt.service;
 
-import com.example.dtt.domain.entity.SysUser;
+import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.domain.model.LoginUser;
 import com.example.dtt.enums.UserStatus;
 import com.example.dtt.exception.ServiceException;
