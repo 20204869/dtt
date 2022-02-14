@@ -122,7 +122,7 @@ public class LoadController extends BaseController {
                 logger.error("删除上传失败但上传hdfs 成功的文件！");
             }
             logger.error("上传文件异常：" + e.getMessage());
-            return AjaxResult.error("请校验配置信息及传传的Excel文件命名格式！");
+            return AjaxResult.error("请校验配置信息及上传传的Excel文件命名格式！");
         }
     }
 

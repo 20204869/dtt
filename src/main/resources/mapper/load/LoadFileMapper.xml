@@ -39,6 +39,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="fileName != null and fileName != ''">
 			AND  a.file_name like concat('%', #{fileName}, '%')
 		</if>
+		<if test="confId != null and confId != ''">
+			AND  a.conf_id like concat('%', #{confId}, '%')
+		</if>
 		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 			AND date_format(a.load_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
 		</if>

@@ -14,9 +14,9 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="业务类型" prop="fileType">
+          <el-form-item label="业务类型" prop="confId">
                       <el-select
-                        v-model="queryParams.fileType"
+                        v-model="queryParams.confId"
                         placeholder="业务类型"
                         clearable
                         size="small"
