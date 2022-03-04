@@ -315,8 +315,9 @@ public class ExcelXlsxReaderWithDefaultHandler extends DefaultHandler {
                     }
                 }
 
-                if (flag && curRow != 1) { //该行不为空行且该行不是第一行，则发送（第一行为列名，不需要）
-                    ExcelReaderUtil.sendRows(filePath, sheetName, sheetIndex, curRow, cellList, resultFilePath,resultFileName );
+                //if (flag && curRow != 1) { //该行不为空行且该行不是第一行，则发送（第一行为列名，不需要）
+                if (flag) {
+                        ExcelReaderUtil.sendRows(filePath, sheetName, sheetIndex, curRow, cellList, resultFilePath,resultFileName );
                     totalRows++;
                 }
                 cellList.clear();

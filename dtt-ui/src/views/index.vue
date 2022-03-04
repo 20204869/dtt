@@ -1,5 +1,8 @@
 <template>
-
+<div>
+  <div class="hello">
+    <notice :message="message"></notice>
+  </div>
   <div class="page-box">
     <div class="item">
       <div class="left">
@@ -57,8 +60,20 @@
       </div>
     </div>
   </div>
+</div>
 </template>
-
+<script>
+import notice from "./notice";
+export default {
+  components: { notice },
+  name: "HelloWorld",
+  data() {
+    return {
+      message: "详情请咨询大数据部负责人：<span>任鹏远</span>  电话：<span>13651919734</span>"
+    };
+  }
+};
+</script>
 <style>
   .page-box {
     display: flex;

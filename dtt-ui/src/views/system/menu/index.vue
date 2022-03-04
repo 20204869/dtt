@@ -62,8 +62,8 @@
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon" />
         </template>
-      </el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>-->
+      </el-table-column>-->
+      <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
       <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="status" label="状态">
@@ -154,6 +154,11 @@
         <el-col :span="12">
             <el-form-item label="菜单名称" prop="menuName">
               <el-input v-model="form.menuName" placeholder="请输入菜单名称" />
+            </el-form-item>
+          </el-col>
+        <el-col :span="12">
+            <el-form-item label="显示排序" prop="orderNum">
+              <el-input-number v-model="form.orderNum" controls-position="right" :min="0" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -327,6 +332,9 @@ export default {
       rules: {
         menuName: [
           { required: true, message: "菜单名称不能为空", trigger: "blur" }
+        ],
+      orderNum: [
+          { required: true, message: "菜单顺序不能为空", trigger: "blur" }
         ],
         path: [
           { required: true, message: "路由地址不能为空", trigger: "blur" }

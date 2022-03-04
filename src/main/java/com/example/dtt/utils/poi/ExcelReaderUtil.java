@@ -100,15 +100,15 @@ public class ExcelReaderUtil {
         fos.close();
     }
 
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
         //String path="D:\\Github\\test.xls";
         //String path="D:\\H3CIDEA\\POIExcel\\test.xlsx";
         String path = "D:\\demo\\user.xlsx";
         path = new String(path.getBytes("GBK"), "UTF-8");
-        /*ExcelReaderUtil.readExcel(file2.getAbsolutePath(),"/home/test/tmp.xlsx");*/
+        *//*ExcelReaderUtil.readExcel(file2.getAbsolutePath(),"/home/test/tmp.xlsx");*//*
         String resultFilePath = "D:\\demo";
         String resultFileName = "user";
        // ExcelReaderUtil.readExcel(path,resultFilePath,resultFileName);
-        /*readXlsx(file2.getAbsolutePath());*/
-    }
+        *//*readXlsx(file2.getAbsolutePath());*//*
+    }*/
 }

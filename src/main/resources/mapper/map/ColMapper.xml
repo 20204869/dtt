@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.map.ColMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.map.Cols" id="ColResult">
+		<result property="tblId"     column="TBL_ID"    />
+		<result property="colName"     column="COLUMN_NAME"    />
+		<result property="colType"     column="TYPE_NAME"    />
+		<result property="comment"   column="COMMENT"  />
+	</resultMap>
+
+	<select id="selectColByTblId" parameterType="Long" resultMap="ColResult">
+		select TBL_ID,COLUMN_NAME,TYPE_NAME,COMMENT from COLUMNS_V2 a
+		INNER JOIN SDS b on a.CD_ID = b.CD_ID
+		INNER JOIN TBLS c on b.SD_ID = c.SD_ID
+		where c.TBL_ID= #{tableId}
+	</select>
+
+</mapper>

@@ -48,6 +48,8 @@ public class LoadController extends BaseController {
         return getDataTable(list);
     }
 
+
+
     /**
      * 上传文件
      */
@@ -56,7 +58,7 @@ public class LoadController extends BaseController {
     @PostMapping("/save")
     public AjaxResult saveFile(@RequestParam("file") MultipartFile file, @RequestParam("confId") Long confId) {
         FileSystem fs = null;
-        Path dstPath = null;
+        String hdfsPathName = null;
         try {
             if (file.isEmpty()) {
                 return AjaxResult.error("上传文件不能为空，请选择上传文件!");
@@ -72,6 +74,8 @@ public class LoadController extends BaseController {
             }
             //hive表名+日期作为文件名写入hdfs
             String fileName = fileConf.getHiveTable().split("\\.")[1] + "_" + fileNameSuffix;
+            //HDFS路径+文件名
+            hdfsPathName = filePath+fileName;
             //List<String[]> list = FileExcel2CsvUtils.readExcel(file);
             // File directory = new File("");//参数为空
             // String courseFile = DemoConfig.getUploadPath(confId);
@@ -98,7 +102,7 @@ public class LoadController extends BaseController {
             //  fs = HadoopUtils.getDevFS();
             fs = HadoopUtils.getProdFS();
             Path srcPath = new Path(dst);
-            dstPath = new Path(filePath);
+            Path dstPath = new Path(filePath);
             //判断HDFS路径是否存在，不存在则创建
             if (!fs.exists(dstPath)) {
                 fs.mkdirs(dstPath);
@@ -113,16 +117,17 @@ public class LoadController extends BaseController {
             loadFile.setLoadUser(loadUser);
             return toAjax(loadFileService.saveFile(loadFile));
         } catch (Exception e) {
+            Path hdfsPath = new Path(hdfsPathName);
             try {
-                if (fs.exists(dstPath)) {
-                    fs.delete(dstPath, false);
+                if (fs.exists(hdfsPath)) {
+                    fs.delete(hdfsPath, false);
                 }
             } catch (IOException exception) {
                 exception.printStackTrace();
                 logger.error("删除上传失败但上传hdfs 成功的文件！");
             }
             logger.error("上传文件异常：" + e.getMessage());
-            return AjaxResult.error("请校验配置信息及传传的Excel文件命名格式！");
+            return AjaxResult.error("请校验配置信息及上传传的Excel文件命名格式！");
         }
     }
 

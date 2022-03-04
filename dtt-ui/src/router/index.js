@@ -107,6 +107,34 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/map/meta-table',
+    component: Layout,
+    hidden: true,
+    permissions: ['map:meta:query'],
+    children: [
+      {
+        path: 'metaTable/:tableId(\\d+)',
+        component: () => import('@/views/map/meta/tableMeta'),
+        name: 'metaTable',
+        meta: { title: '表详情', activeMenu: '/map/meta' }
+      }
+    ]
+  },
+  {
+    path: '/map/business-col',
+    component: Layout,
+    hidden: true,
+    permissions: ['map:business:query'],
+    children: [
+      {
+        path: 'businessCol/:tableName',
+        component: () => import('@/views/map/business/businessCol'),
+        name: 'businessCol',
+        meta: { title: '表字段', activeMenu: '/map/business' }
+      }
+    ]
+  },
+  {
     path: '/system/role-auth',
     component: Layout,
     hidden: true,

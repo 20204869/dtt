@@ -28,6 +28,11 @@ public class SysMenu extends BaseEntity
     /** 父菜单ID */
     private Long parentId;
 
+    /**
+     * 菜单显示顺序
+     */
+    private Integer orderNum;
+
     /** 路由地址 */
     private String path;
 
@@ -60,6 +65,14 @@ public class SysMenu extends BaseEntity
 
     /** 子菜单 */
     private List<SysMenu> children = new ArrayList<SysMenu>();
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
 
     public Long getMenuId()
     {

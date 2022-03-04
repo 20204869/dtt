@@ -73,8 +73,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         code: "",
         uuid: ""
@@ -90,7 +90,7 @@ export default {
       },
       loading: false,
       // 验证码开关
-      captchaOnOff: true,
+      captchaOnOff:false,
       // 注册开关
       register: false,
       redirect: undefined
@@ -154,8 +154,6 @@ export default {
     }
   }
 };
-</script>
-
 <style rel="stylesheet/scss" lang="scss">
 .login {
   display: flex;

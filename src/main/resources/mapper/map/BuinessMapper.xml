@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.map.BusinessMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.map.Business" id="buinessResult">
+		<result property="tableName"     column="table_name"    />
+		<result property="tableComment"   column="table_comment"  />
+		<result property="colName"     column="col_name"    />
+		<result property="colComment"   column="col_comment"  />
+	</resultMap>
+
+	<sql id="businessVo">
+		SELECT CONCAT(database_name,'.',`table_name`) AS table_name,table_comment,col_name,col_comment FROM cango_table
+	</sql>
+
+	<select id="buinessList" parameterType="String" resultMap="buinessResult">
+		<include refid="businessVo"/>
+		where CONCAT(database_name,`table_name`,table_comment,col_name,col_comment) LIKE CONCAT('%', #{searchValue},'%')
+	</select>
+
+	<select id="colsFromTableName" parameterType="String" resultMap="buinessResult">
+		<include refid="businessVo"/>
+		where CONCAT(database_name,'.',`table_name`)= #{tableName}
+	</select>
+
+</mapper>

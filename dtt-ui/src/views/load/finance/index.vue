@@ -14,9 +14,9 @@
               @keyup.enter.native="handleQuery"
             />
           </el-form-item>
-          <el-form-item label="业务类型" prop="fileType">
+          <el-form-item label="业务类型" prop="confId">
                       <el-select
-                        v-model="queryParams.fileType"
+                        v-model="queryParams.confId"
                         placeholder="业务类型"
                         clearable
                         size="small"
@@ -48,7 +48,7 @@
           </el-form-item>
         </el-form>
         <p style="font-size:18px;color:red">
-        导入Excel要求：1.Excel有首行字段  2.Excel单元格内不允许有换行符  3.Excel不存在合并单元格  4.文件名要包含日期 例如XXX-20221212.xlsx
+        导入Excel要求：1.Excel有首行字段  2.Excel单元格内不允许有换行符  3.Excel不存在合并单元格  4.文件名要包含日期 例如XXX-20221212.xlsx 5.若导入的Excel存在增删列请通知大数据相关人员
         </p>
         <el-row :gutter="10" class="mb8">
         <el-col :span="1.5">
@@ -204,7 +204,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 50,
         fileName:undefined,
         fileType:undefined
       },

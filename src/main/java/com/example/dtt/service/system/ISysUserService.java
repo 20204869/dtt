@@ -49,6 +49,13 @@ public interface ISysUserService {
     SysUser selectUserById(Long userId);
 
     /**
+     * 通过工号查询用户
+     * @param userSn
+     * @return 用户对象信息
+     */
+    SysUser selectUserByUserSn(String userSn);
+
+    /**
      * 根据用户ID查询用户所属角色组
      *
      * @param userName 用户名

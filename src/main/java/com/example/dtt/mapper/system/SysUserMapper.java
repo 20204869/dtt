@@ -50,6 +50,13 @@ public interface SysUserMapper {
     SysUser selectUserById(Long userId);
 
     /**
+     * 通过员工号查询用户信息
+     * @param userSn 工号
+     * @return 用户对象想想
+     */
+    SysUser selectUserByUserSn(String userSn);
+
+    /**
      * 新增用户信息
      *
      * @param user 用户信息

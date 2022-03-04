@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.map.TableRelationMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.map.TableRelation" id="TableRelationResult">
+		<result property="id"     column="id"    />
+		<result property="tableId"     column="table_id"    />
+		<result property="parentId"     column="parent_id"    />
+		<result property="name"     column="table_name"    />
+		<result property="tableSql"   column="table_sql"  />
+	</resultMap>
+
+	<sql id="selectTableRelationVo">
+		select id,table_id,parent_id,table_name,table_sql from table_relation
+	</sql>
+
+	<select id="getTableRelationByName" parameterType="String" resultMap="TableRelationResult">
+		<include refid="selectTableRelationVo"/>
+		where parent_id is null and table_name = #{tableName}
+	</select>
+
+	<!--相同表名的只获取其中一条-->
+	<select id="getTableRelationOriginName" parameterType="String" resultMap="TableRelationResult">
+		select id,table_id,parent_id,table_name,table_sql from table_relation
+		where table_name = #{tableName}
+		limit 1
+	</select>
+
+	<select id="getTableRelationById" parameterType="Long" resultMap="TableRelationResult">
+		<include refid="selectTableRelationVo"/>
+		where parent_id = #{tableId}
+	</select>
+
+</mapper>

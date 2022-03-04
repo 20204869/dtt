@@ -246,7 +246,7 @@ export default {
       // 查询参数
       queryParams: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 50,
         business: undefined,
         fileType: undefined,
         tablePrefix: undefined,
@@ -275,9 +275,6 @@ export default {
           { required: true, message: "用户昵称不能为空", trigger: "blur" }
         ],
         hiveTable: [
-          { required: true, message: "用户密码不能为空", trigger: "blur" }
-        ],
-        tablePrefix: [
           { required: true, message: "用户密码不能为空", trigger: "blur" }
         ],
         hdfsPath: [

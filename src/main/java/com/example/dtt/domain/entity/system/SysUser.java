@@ -31,6 +31,8 @@ public class SysUser extends BaseEntity
 
     /** 用户昵称 */
     private String nickName;
+    /**工号*/
+    private String userSn;
 
     /** 用户邮箱 */
     private String email;
@@ -80,6 +82,14 @@ public class SysUser extends BaseEntity
     public SysUser()
     {
 
+    }
+
+    public String getUserSn() {
+        return userSn;
+    }
+
+    public void setUserSn(String userSn) {
+        this.userSn = userSn;
     }
 
     public SysUser(Long userId)

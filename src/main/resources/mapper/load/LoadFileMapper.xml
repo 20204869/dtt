@@ -36,6 +36,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="fileId != null ">
 			AND a.file_id = #{fileId}
 		</if>
+		<if test="confId != null">
+			AND  a.conf_id #{confId}
+		</if>
 		<if test="fileName != null and fileName != ''">
 			AND  a.file_name like concat('%', #{fileName}, '%')
 		</if>
