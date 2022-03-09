@@ -9,12 +9,18 @@ spring:
                 url: jdbc:mysql://localhost:3306/dtt?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
                 password: 123456
+                #url: jdbc:mysql://10.32.44.11:3306/cango_dtt?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                #username: datamanager
+                #password: WL7KuPM3vHtpaGnNCp0r
             # 从库数据源
             slave:
                 # 从数据源开关/默认关闭
                 enabled: true
-                MysqlDriverClassName: com.mysql.cj.jdbc.Driver
-                url: jdbc:mysql://localhost:3306/hive?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                #MysqlDriverClassName: com.mysql.cj.jdbc.Driver
+                #url: jdbc:mysql://172.20.70.158:3306/metastore?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                #username: hive
+                #password: hive12345
+                url: jdbc:mysql://192.168.121.144:3306/hive?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
                 username: root
                 password: root12345
             # 初始连接数
