@@ -12,17 +12,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="businessVo">
-		SELECT CONCAT(database_name,'.',`table_name`) AS table_name,table_comment,col_name,col_comment FROM cango_table
+		SELECT CONCAT(IFNULL(database_name,''),'.',IFNULL(`table_name`,'')) AS table_name,table_comment,col_name,col_comment FROM cango_table
 	</sql>
 
 	<select id="buinessList" parameterType="String" resultMap="buinessResult">
 		<include refid="businessVo"/>
-		where CONCAT(database_name,`table_name`,table_comment,col_name,col_comment) LIKE CONCAT('%', #{searchValue},'%')
+		where CONCAT(IFNULL(database_name,''),IFNULL(`table_name`,''),IFNULL(table_comment,''),IFNULL(col_name,''),IFNULL(col_comment,'')) LIKE CONCAT('%', #{searchValue},'%')
 	</select>
 
 	<select id="colsFromTableName" parameterType="String" resultMap="buinessResult">
 		<include refid="businessVo"/>
-		where CONCAT(database_name,'.',`table_name`)= #{tableName}
+		where CONCAT(IFNULL(database_name,''),'.',IFNULL(`table_name`,''))= #{tableName}
 	</select>
 
 </mapper>

@@ -1,8 +1,10 @@
 package com.example.dtt.service.map;
 
+import com.example.dtt.domain.TreeSelect;
 import com.example.dtt.domain.entity.map.Table;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author reid
@@ -23,6 +25,12 @@ public interface TableService {
      * @return
      */
     List<Table> selectTableByTableName(String tableName);
+
+    /**
+     * 库表树形结构
+     * @return
+     */
+    List<TreeSelect> dbTableList ();
 
     /**
      * 根据表id查询表

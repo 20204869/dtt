@@ -3,6 +3,8 @@ package com.example.dtt.domain.entity.map;
 
 import com.example.dtt.domain.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,6 +18,15 @@ public class Table extends BaseEntity {
     private Long tableId;
     private String tableName;
     private Long dbId;
+    private String dbName;
+
+    public String getDbName() {
+        return dbName;
+    }
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
 
     public Long getTableId() {
         return tableId;

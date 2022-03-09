@@ -3,6 +3,7 @@ package com.example.dtt.controller.map;
 import com.example.dtt.annotation.DataSource;
 import com.example.dtt.controller.base.BaseController;
 import com.example.dtt.domain.AjaxResult;
+import com.example.dtt.domain.TreeSelect;
 import com.example.dtt.domain.entity.map.Business;
 import com.example.dtt.domain.entity.map.Cols;
 import com.example.dtt.domain.entity.map.DB;
@@ -11,6 +12,7 @@ import com.example.dtt.domain.page.TableDataInfo;
 import com.example.dtt.enums.DataSourceType;
 import com.example.dtt.service.map.*;
 import com.example.dtt.utils.StringUtils;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -39,9 +42,6 @@ public class MetaStoreController extends BaseController {
 
     @Autowired
     private TableRelationService relationService;
-
-    @Autowired
-    private BusinessService businessService;
 
     /**
      * 获取表列表
@@ -78,6 +78,16 @@ public class MetaStoreController extends BaseController {
         List<Cols> cols = colService.selectColByTblId(tableId);
         ajax.put("table", table);
         ajax.put("cols", cols.stream().collect(Collectors.toList()));
+        return ajax;
+    }
+
+    @DataSource(DataSourceType.SLAVE)
+    @PreAuthorize("@ss.hasPermi('map:meta:query')")
+    @GetMapping("/dbTable")
+    public AjaxResult dbTableList() {
+        AjaxResult ajax = AjaxResult.success();
+        List<TreeSelect> dbTable = tableService.dbTableList();
+        ajax.put("dbTable", dbTable.stream().collect(Collectors.toList()));
         return ajax;
     }
 

@@ -26,6 +26,12 @@ public interface TableMapper {
     List<Table> selectTableByTableName(String tableName);
 
     /**
+     * 库表树形结构
+     * @return
+     */
+    List<Table> dbTableList ();
+
+    /**
      * 根据表id查询表
      * @param tableId
      * @return

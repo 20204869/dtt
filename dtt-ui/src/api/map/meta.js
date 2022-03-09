@@ -8,7 +8,7 @@ export function treeselect() {
   })
 }
 
-// 查询用户列表
+// 查询表列表
 export function listTable(query) {
   return request({
     url: '/map/meta/tableList',
@@ -16,6 +16,16 @@ export function listTable(query) {
     params: query
   })
 }
+
+
+// 查询表列表
+export function listDbTable() {
+  return request({
+    url: '/map/meta/dbTable',
+    method: 'get'
+  })
+}
+
 
 // 查询表 详细信息
 export function getTableDetail(tableId) {
@@ -33,3 +43,5 @@ export function getTableRelation(tableName) {
     method: 'get'
   })
 }
+
+

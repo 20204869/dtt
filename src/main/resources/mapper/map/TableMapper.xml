@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="com.example.dtt.domain.entity.map.Table" id="TableResult">
 		<result property="tableId"     column="TBL_ID"    />
 		<result property="dbId"     column="DB_ID"    />
+		<result property="dbName"     column="name"    />
 		<result property="tableName"     column="tbl_name"    />
 		<result property="createBy"     column="create_by"    />
 		<result property="createTime"   column="create_time"  />
@@ -14,13 +15,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="selectTableVo">
-		select t.TBL_ID,t.DB_ID,CONCAT(d.`NAME`,'.',t.TBL_NAME) as tbl_name,t.`OWNER` as create_by,FROM_UNIXTIME(t.CREATE_TIME) as create_time,PARAM_VALUE as tbl_comment from TBLS t
+		select t.TBL_ID,t.DB_ID,d.`NAME`,CONCAT(d.`NAME`,'.',t.TBL_NAME) as tbl_name,t.`OWNER` as create_by,FROM_UNIXTIME(t.CREATE_TIME) as create_time,PARAM_VALUE as tbl_comment from TBLS t
 		inner join DBS d on t.DB_ID=d.DB_ID
 		left join (select TBL_ID,PARAM_VALUE from TABLE_PARAMS where PARAM_KEY='comment') p  on t.tbl_id = p.TBL_ID
 	</sql>
 
 	<select id="selectTableList" parameterType="com.example.dtt.domain.entity.map.Table" resultMap="TableResult">
-		select t.TBL_ID,t.DB_ID,CONCAT(d.`NAME`,'.',t.TBL_NAME) as tbl_name,t.`OWNER` as create_by,FROM_UNIXTIME(t.CREATE_TIME) as create_time,PARAM_VALUE as tbl_comment from TBLS t
+		select t.TBL_ID,t.DB_ID,d.`NAME`,CONCAT(d.`NAME`,'.',t.TBL_NAME) as tbl_name,t.`OWNER` as create_by,FROM_UNIXTIME(t.CREATE_TIME) as create_time,PARAM_VALUE as tbl_comment from TBLS t
 		inner join DBS d on t.DB_ID=d.DB_ID
 		left join (select TBL_ID,PARAM_VALUE from TABLE_PARAMS where PARAM_KEY='comment') p  on t.tbl_id = p.TBL_ID
 		inner join (
@@ -33,13 +34,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			AND t.TBL_ID = #{tableId}
 		</if>
 		<if test="tableName != null and tableName != ''">
-			AND CONCAT(d.`NAME`,t.TBL_NAME,PARAM_VALUE,c.COLUMN_NAME,c.COMMENT) LIKE CONCAT('%', #{tableName},'%')
+			AND CONCAT(IFNULL(d.`NAME`,''),'.',IFNULL(t.TBL_NAME,''),IFNULL(PARAM_VALUE,''),IFNULL(c.COLUMN_NAME,''),IFNULL(c.COMMENT,'')) LIKE CONCAT('%', #{tableName},'%')
 		</if>
 		<if test="dbId != null and dbId != '' ">
 			AND t.DB_ID = #{dbId}
 		</if>
 		<!-- 数据范围过滤 -->
 		${params.dataScope}
+	</select>
+
+	<select id="dbTableList" resultMap="TableResult">
+		select t.TBL_ID,t.DB_ID, d.`NAME`,CONCAT(t.TBL_NAME,'(',t.`OWNER`,')') as tbl_name  from TBLS t
+		    inner join DBS d on t.DB_ID=d.DB_ID
 	</select>
 
 	<select id="selectTableByTableName" parameterType="String" resultMap="TableResult">

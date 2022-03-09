@@ -25,7 +25,7 @@ public class TableRelationServiceImpl implements TableRelationService {
         List<TableRelation> result = new ArrayList<>();
         //是否是源表
         String databaseName = tableName.toLowerCase().split("\\.")[0];
-        boolean isOrigin = "dwd".contains(databaseName) || "dws".contains(databaseName) || "dma".contains(databaseName);
+        boolean isOrigin = "dwd".contains(databaseName) || "dws".contains(databaseName) || "dma".contains(databaseName) || "dim".contains(databaseName) || "risk".contains(databaseName);
         //源数据
         if (!isOrigin) {
             result.add(mapper.getTableRelationOriginName(tableName));
@@ -53,7 +53,7 @@ public class TableRelationServiceImpl implements TableRelationService {
         //非源表表名
         for (TableRelation tableRelation : tableRelations) {
             String databaseName = tableRelation.getName().toLowerCase().split("\\.")[0];
-            boolean isOrigin = "dwd".contains(databaseName) || "dws".contains(databaseName) || "dma".contains(databaseName);
+            boolean isOrigin = "dwd".contains(databaseName) || "dws".contains(databaseName) || "dma".contains(databaseName) || "dim".contains(databaseName) || "risk".contains(databaseName);
             if (isOrigin) {
                 TableRelation childTable = mapper.getTableRelationByName(tableRelation.getName());
                 if (childTable == null) {

@@ -64,7 +64,7 @@ public class SysIndexController {
         Map<String, Object> tokenParams = new HashMap<>();
         tokenParams.put("appKey", SsoHttpConstants.TEST_APP_KEY);
         tokenParams.put("appSecret", SsoHttpConstants.TEST_APP_KEY);
-        /*tokenParams.put("appKey", SsoHttpConstants.PRO_APP_KEY);
+       /* tokenParams.put("appKey", SsoHttpConstants.PRO_APP_KEY);
         tokenParams.put("appSecret", SsoHttpConstants.PRO_APP_SECRET);*/
         try {
             tokenResult = HttpReqUtils.getPostToken(tokenUrl, tokenParams);
@@ -120,6 +120,6 @@ public class SysIndexController {
         }
 
         resp.sendRedirect(SsoHttpConstants.LOCAL_PATH+"userName=" + userName + "&password=" + password);
-       // resp.sendRedirect(SsoHttpConstants.PRO_PATH+"userName=" + userName + "&password=" + password);
+        //resp.sendRedirect(SsoHttpConstants.PRO_PATH+"userName=" + userName + "&password=" + password);
     }
 }
