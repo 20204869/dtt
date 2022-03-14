@@ -71,7 +71,8 @@ router.beforeEach((to, from, next) => {
           router.push({ path: "/" }).catch(()=>{});
         })
       } else {
-         const fullPath = ''
+        const fullPath = 'https://sso-test.cangoonline.net/?redirectUrl=http://localhost:8099&appId=appManager#/login'
+        // const fullPath = 'https://sso.cangoonline.net/?redirectUrl=http://datamanager.cangoonline.net/datamanager&appId=dataManager#/login'
         console.log(fullPath)
         next(false)
         window.location.href = fullPath
