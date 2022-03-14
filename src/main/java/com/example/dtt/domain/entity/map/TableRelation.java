@@ -19,6 +19,13 @@ public class TableRelation implements Serializable {
     private String name;
     private String tableSql;
 
+    public TableRelation() {
+    }
+
+    public TableRelation(String name) {
+        this.name = name;
+    }
+
     private List<TableRelation> children = new ArrayList<>();
 
     public List<TableRelation> getChildren() {

@@ -10,8 +10,8 @@ public class LoadFileConstants {
     /**
      * hdfs 服务地址
      */
-    public static final String HDFS_NAME_PROD = "xxx";
-    public static final String HDFS_NAME_DEV = "xxx";
+    public static final String HDFS_NAME_PROD = "hdfs://nameservice1";
+    public static final String HDFS_NAME_DEV = "hdfs://cango";
     /**
      * 业务离线数据表前缀
      */

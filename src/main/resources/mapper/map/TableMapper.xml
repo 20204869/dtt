@@ -43,9 +43,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		${params.dataScope}
 	</select>
 
-	<select id="dbTableList" resultMap="TableResult">
+	<select id="tableListBydbId" parameterType="Long" resultMap="TableResult">
 		select t.TBL_ID,t.DB_ID, d.`NAME`,CONCAT(t.TBL_NAME,'(',t.`OWNER`,')') as tbl_name  from TBLS t
 		    inner join DBS d on t.DB_ID=d.DB_ID
+			where t.DB_ID = #{dbId}
 	</select>
 
 	<select id="selectTableByTableName" parameterType="String" resultMap="TableResult">

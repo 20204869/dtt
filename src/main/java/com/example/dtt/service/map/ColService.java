@@ -17,4 +17,11 @@ public interface ColService {
      * @return
      */
     List<Cols> selectColByTblId(Long tblId);
+
+    /**
+     * 根据表查询字段信息
+     * @param tblId
+     * @return
+     */
+    List<Cols> ColsByTblId(Long tblId);
 }

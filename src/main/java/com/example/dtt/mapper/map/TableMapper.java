@@ -2,6 +2,7 @@ package com.example.dtt.mapper.map;
 
 
 import com.example.dtt.domain.entity.map.Table;
+import javafx.scene.control.Tab;
 
 import java.util.List;
 
@@ -26,11 +27,11 @@ public interface TableMapper {
     List<Table> selectTableByTableName(String tableName);
 
     /**
-     * 库表树形结构
+     * 通过数据库id查询表列表
+     * @param dbId
      * @return
      */
-    List<Table> dbTableList ();
-
+    List<Table> tableListBydbId(Long dbId);
     /**
      * 根据表id查询表
      * @param tableId

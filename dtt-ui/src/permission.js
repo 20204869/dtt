@@ -71,6 +71,7 @@ router.beforeEach((to, from, next) => {
           router.push({ path: "/" }).catch(()=>{});
         })
       } else {
+         const fullPath = ''
         console.log(fullPath)
         next(false)
         window.location.href = fullPath

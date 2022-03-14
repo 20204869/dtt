@@ -81,13 +81,29 @@ public class MetaStoreController extends BaseController {
         return ajax;
     }
 
+    /**
+     * 根据表id获取表字段列表
+     */
     @DataSource(DataSourceType.SLAVE)
     @PreAuthorize("@ss.hasPermi('map:meta:query')")
-    @GetMapping("/dbTable")
-    public AjaxResult dbTableList() {
+    @GetMapping("/cols/{tableId}")
+    public AjaxResult cols(@PathVariable(value = "tableId") Long tableId) {
         AjaxResult ajax = AjaxResult.success();
-        List<TreeSelect> dbTable = tableService.dbTableList();
-        ajax.put("dbTable", dbTable.stream().collect(Collectors.toList()));
+        List<Cols> cols = colService.ColsByTblId(tableId);
+        ajax.put("cols", cols.stream().collect(Collectors.toList()));
+        return ajax;
+    }
+
+    /**
+     * 根据表id获取表字段列表
+     */
+    @DataSource(DataSourceType.SLAVE)
+    @PreAuthorize("@ss.hasPermi('map:meta:query')")
+    @GetMapping("/tableList/{dbId}")
+    public AjaxResult getTableList(@PathVariable(value = "dbId") Long dbId) {
+        AjaxResult ajax = AjaxResult.success();
+        List<Table> tables = tableService.tableListBydbId(dbId);
+        ajax.put("table", tables.stream().collect(Collectors.toList()));
         return ajax;
     }
 

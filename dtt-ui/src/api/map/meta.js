@@ -26,11 +26,25 @@ export function listDbTable() {
   })
 }
 
-
 // 查询表 详细信息
 export function getTableDetail(tableId) {
   return request({
     url: '/map/meta/metaTable/' + tableId,
+    method: 'get'
+  })
+}
+
+export function getTableList(dbId) {
+  return request({
+    url: '/map/meta/tableList/' + dbId,
+    method: 'get'
+  })
+}
+
+
+export function colList(tableId) {
+  return request({
+    url: '/map/meta/cols/' + tableId,
     method: 'get'
   })
 }

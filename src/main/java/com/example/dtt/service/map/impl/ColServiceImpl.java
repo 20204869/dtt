@@ -28,4 +28,9 @@ public class ColServiceImpl implements ColService {
     public List<Cols> selectColByTblId(Long tblId) {
         return colMapper.selectColByTblId(tblId);
     }
+
+    @Override
+    public List<Cols> ColsByTblId(Long tblId) {
+        return colMapper.ColsByTblId(tblId);
+    }
 }
