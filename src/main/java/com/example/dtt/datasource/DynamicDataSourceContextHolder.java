@@ -1,4 +1,4 @@
-package com.example.dtt.datasources;
+package com.example.dtt.datasource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

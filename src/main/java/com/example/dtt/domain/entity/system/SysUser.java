@@ -64,6 +64,9 @@ public class SysUser extends BaseEntity
     /** 最后登录时间 */
     private Date loginDate;
 
+    /** 用户是否存在此取数模板标识 默认不存在 */
+    private boolean flag = false;
+
     /** 部门对象 */
     private SysDept dept;
 
@@ -82,6 +85,14 @@ public class SysUser extends BaseEntity
     public SysUser()
     {
 
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
     public String getUserSn() {

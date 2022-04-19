@@ -107,6 +107,34 @@ export const dynamicRoutes = [
     ]
   },
   {
+    path: '/system/user-template',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:user:edit'],
+    children: [
+      {
+        path: 'template/:userId(\\d+)',
+        component: () => import('@/views/system/user/authTemplate'),
+        name: 'AuthTemplate',
+        meta: { title: '分配取数模板', activeMenu: '/system/user' }
+      }
+    ]
+  },
+  {
+    path: '/extract/user-template',
+    component: Layout,
+    hidden: true,
+    permissions: ['extract:conf:edit'],
+    children: [
+      {
+        path: 'userTemplate/:id(\\d+)',
+        component: () => import('@/views/extract/conf/userTemplate'),
+        name: 'UserTemplate',
+        meta: { title: '分配用户', activeMenu: '/extract/conf' }
+      }
+    ]
+  },
+  {
     path: '/map/meta-table',
     component: Layout,
     hidden: true,
@@ -114,6 +142,20 @@ export const dynamicRoutes = [
     children: [
       {
         path: 'metaTable/:tableId(\\d+)',
+        component: () => import('@/views/map/meta/tableMeta'),
+        name: 'metaTable',
+        meta: { title: '表详情', activeMenu: '/map/meta' }
+      }
+    ]
+  },
+  {
+    path: '/map/meta-tableName',
+    component: Layout,
+    hidden: true,
+    permissions: ['map:meta:query'],
+    children: [
+      {
+        path: 'metaTables/:tableName',
         component: () => import('@/views/map/meta/tableMeta'),
         name: 'metaTable',
         meta: { title: '表详情', activeMenu: '/map/meta' }

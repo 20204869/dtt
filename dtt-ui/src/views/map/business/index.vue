@@ -1,95 +1,100 @@
 <template>
-    <div>
-        <logo-select  @getindex='getIndex'></logo-select>
-        <div class="search-input">
-            <input type="text" v-model="searchValue">
-            <span class="search-reset" @click="clearInput()">&times;</span>
-            <button class="search-btn" @click="search()">搜一下</button>
-        </div>
-          <div>
-              <el-table :data="tables" height="600" border :row-style="tableRowStyle" :header-cell-style="tableHeaderColor" style="width: 100%">
-                <el-table-column label="库*表" align="center" key="tableName" prop="tableName" v-if="columns[0].visible" />
-                <el-table-column label="注释" align="center" key="tableComment" prop="tableComment" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-                <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-                <template slot-scope="scope">
-                       <router-link :to="'/map/business-col/businessCol/' + scope.row.tableName" class="link-type">
-                         <span>表字段详情</span>
-                       </router-link>
-                  </template>
-                      </el-table-column>
-              </el-table>
-           </div>
+  <div>
+    <div id="top" style="height: 300px"></div>
+    <div id="search" class="search-input" style="display: flex;">
+      <img style="width: 55px" src="../../../assets/images/search_blue.png"></img>
+      <input type="text" v-model="searchValue">
+      <span class="search-reset" @click="clearInput()">&times;</span>
+      <button class="search-btn" @click="search()">搜一下</button>
     </div>
+    <div id="detail" style="visibility: hidden;border-top: #1e1e1e 5px;">
+      <el-table :data="tables" height="800" border :row-style="tableRowStyle" :header-cell-style="tableHeaderColor" style="width: 100%">
+        <el-table-column label="库名.表名" align="center" key="tableName" prop="tableName" v-if="columns[0].visible"/>
+        <el-table-column label="注释" align="center" key="tableComment" prop="tableComment" v-if="columns[1].visible" :show-overflow-tooltip="true"/>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <router-link :to="'/map/business-col/businessCol/' + scope.row.tableName" class="link-type">
+              <span>表字段详情</span>
+            </router-link>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </div>
 </template>
 
 <script type="text/javascript">
-import logoSelect from './logo-select.vue';
-import { getBusiness} from "@/api/map/business";
+  import logoSelect from './logo-select.vue';
+  import {getBusiness} from "@/api/map/business";
 
-export default {
+  export default {
     //注册组件
     components: {
-        'logo-select': logoSelect
+      'logo-select': logoSelect
     },
-    data: function() {
-        return {
-            loading: true,
-            searchValue: '',
-            tables:[],
-             columns: [
-                 { key: 0, label: `库*表`, visible: true },
-                 { key: 1, label: `注释`, visible: true }
-             ]
-        }
+    data: function () {
+      return {
+        loading: true,
+        searchValue: '',
+        tables: [],
+        columns: [
+          {key: 0, label: `库名.表名`, visible: true},
+          {key: 1, label: `注释`, visible: true}
+        ]
+      }
     },
     methods: {
       /** 关闭按钮 */
-          close() {
-            this.$store.dispatch("tagsView/delView", this.$route);
-            this.$router.push({ path: "/map/business" });
-          },
-        //设置表格行的样式
-        tableRowStyle({row,rowIndex}){
-            return 'background-color:pink;font-size:15px;'
-          },
-        //设置表头行的样式
-        tableHeaderColor({row,column,rowIndex,columnIndex}){
-        return 'background-color:#f0892e;color:#fff;font-wight:400;font-size:15px;text-align:center'
-        },
-        // &event是实参，表示event对象
-        search: function() {
-            //打开对应的搜索界面
-            console.log('搜索关键字：'+this.searchValue)
-           // this.$router.push("/map/business-table/businessTable/" + this.searchValue);
-          if (this.searchValue) {
-            this.loading = true;
-            getBusiness(this.searchValue).then((response) => {
-              this.tables = response.business;
-              this.loading = false;
-            });
-          };
-        },
-        clearInput: function() {
-            this.searchValue = '';
-        },
-        getIndex: function(index) {
-            this.searchIndex = index;
-        }
+      close() {
+        this.$store.dispatch("tagsView/delView", this.$route);
+        this.$router.push({path: "/map/business"});
+      },
+      //设置表格行的样式
+      tableRowStyle({row, rowIndex}) {
+        return 'background-color:pink;font-size:15px;'
+      },
+      //设置表头行的样式
+      tableHeaderColor({row, column, rowIndex, columnIndex}) {
+        return 'background-color:#9CB0C8;color:#fff;font-wight:400;font-size:15px;text-align:center'
+      },
+      // &event是实参，表示event对象
+      search: function () {
+        //打开对应的搜索界面
+        console.log('搜索关键字：' + this.searchValue)
+        // this.$router.push("/map/business-table/businessTable/" + this.searchValue);
+        if (this.searchValue) {
+          this.loading = true;
+          getBusiness(this.searchValue).then((response) => {
+            this.tables = response.business;
+          this.loading = false;
+          document.getElementById('top').style.height = "5px";
+          document.getElementById('detail').style.visibility = "visible";
+          document.getElementById('search').style.marginLeft = "0px";
+        });
+        };
+      },
+      clearInput: function () {
+        this.searchValue = '';
+      },
+      getIndex: function (index) {
+        this.searchIndex = index;
+      }
     },
-    created() {}
-}
+    created() {
+    }
+  }
 </script>
 
 <style type="text/css">
-.search-input {
+  .search-input {
     height: 45px;
     width: 600px;
     margin: 0 auto;
-    margin-top: 10px;
+    margin-top: 5px;
     position: relative;
-}
+  }
 
-.search-input input {
+  .search-input input {
     border: 1px solid #e4e4e4;
     box-sizing: border-box;
     width: 500px;
@@ -99,55 +104,54 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
     overflow: hidden;
-}
+  }
 
-.search-btn {
+  .search-btn {
     height: 45px;
     width: 100px;
-    border: 1px solid mediumseagreen;
-    background-color: mediumseagreen;
+    border: 1px solid #304156;
+    background-color: #304156;
     color: white;
     font-size: 16px;
     font-weight: bold;
     float: left;
-}
+  }
 
-.search-btn {
+  .search-btn {
     cursor: pointer
-}
+  }
 
-.search-select {
+  .search-select {
     position: absolute;
     top: 45px;
     width: 500px;
     box-sizing: border-box;
     z-index: 999;
-}
+  }
 
-.search-select li {
-    border: 1px solid #d4d4d4;
-    ;
+  .search-select li {
+    border: 1px solid #d4d4d4;;
     border-top: none;
     border-bottom: none;
     background-color: #fff;
     width: 100%
-}
+  }
 
-.search-select-option {
+  .search-select-option {
     box-sizing: border-box;
     padding: 7px 10px;
-}
+  }
 
-.selectback {
+  .selectback {
     background-color: #eee !important;
     cursor: pointer
-}
+  }
 
-input::-ms-clear {
+  input::-ms-clear {
     display: none
-}
+  }
 
-.search-reset {
+  .search-reset {
     width: 21px;
     height: 21px;
     position: absolute;
@@ -158,24 +162,28 @@ input::-ms-clear {
     font-size: 20px;
     right: 110px;
     top: 12px
-}
+  }
 
-.search-select-list {
+  .search-select-list {
     transition: all 0.5s
-}
+  }
 
-.itemfade-enter,
-.itemfade-leave-active {
+  .itemfade-enter,
+  .itemfade-leave-active {
     opacity: 0;
-}
+  }
 
-.itemfade-leave-active {
+  .itemfade-leave-active {
     position: absolute;
-}
+  }
 
-.selectback {
+  .selectback {
     background-color: #eee !important;
     cursor: pointer
-}
-.search-select ul{margin:0;text-align: left; }
+  }
+
+  .search-select ul {
+    margin: 0;
+    text-align: left;
+  }
 </style>

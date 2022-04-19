@@ -12,6 +12,13 @@ import java.util.List;
  * @describe 指标维度 数据库层
  */
 public interface TargetMapper {
+
+    /**
+     * 通过指标名查询指标
+     * @param targetName
+     * @return
+     */
+    Target targetByName(String targetName);
     /**
      * 分页查询指标
      * @param target

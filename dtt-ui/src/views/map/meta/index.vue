@@ -160,7 +160,7 @@
              -->
              <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                   <template slot-scope="scope">
-                       <router-link :to="'/map/meta-table/metaTable/' + scope.row.tableId" class="link-type">
+                       <router-link :to="'/map/meta-tableName/metaTables/' + scope.row.tableName" class="link-type">
                          <span>详情</span>
                        </router-link>
                   </template>

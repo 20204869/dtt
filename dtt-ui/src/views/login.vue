@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
-      <h3 class="title">DataManager管理平台</h3>
+      <h3 class="title">DataManager管理后台</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
@@ -54,11 +54,10 @@
         </div>
       </el-form-item>
     </el-form>
-    <!--  底部
+    <!--  底部  -->
     <div class="el-login-footer">
       <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
     </div>
-    -->
   </div>
 </template>
 
@@ -73,8 +72,8 @@ export default {
     return {
       codeUrl: "",
       loginForm: {
-        username: "",
-        password: "",
+        username: "admin",
+        password: "admin123",
         rememberMe: false,
         code: "",
         uuid: ""
@@ -90,7 +89,7 @@ export default {
       },
       loading: false,
       // 验证码开关
-      captchaOnOff:false,
+      captchaOnOff: true,
       // 注册开关
       register: false,
       redirect: undefined
@@ -154,13 +153,15 @@ export default {
     }
   }
 };
+</script>
+
 <style rel="stylesheet/scss" lang="scss">
 .login {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  //background-image: url("../assets/images/login-background.jpg");
+ // background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
 .title {

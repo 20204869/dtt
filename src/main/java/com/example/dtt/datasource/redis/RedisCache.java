@@ -1,4 +1,4 @@
-package com.example.dtt.datasources.redis;
+package com.example.dtt.datasource.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundSetOperations;

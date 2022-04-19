@@ -103,12 +103,13 @@
               size="mini"
               :disabled="multiple"
               @click="handleDelete"
-              v-hasPermi="['load:conf:add:remove']"
+              v-hasPermi="['load:conf:remove']"
             >删除</el-button>
           </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
         <el-table v-loading="loading" :data="confList" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="编号" align="center" key="confId" prop="confId" v-if="columns[0].visible" width="60"/>
           <el-table-column label="业务系统" align="center" key="business" prop="business" v-if="columns[1].visible" :show-overflow-tooltip="true" width="100"/>
           <el-table-column label="数据类型" align="center" key="fileType" prop="fileType" v-if="columns[2].visible" :show-overflow-tooltip="true" width="160"/>

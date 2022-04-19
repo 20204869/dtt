@@ -24,4 +24,6 @@ public interface ColService {
      * @return
      */
     List<Cols> ColsByTblId(Long tblId);
+
+    List<Cols> selectColByTblName(String tblName);
 }

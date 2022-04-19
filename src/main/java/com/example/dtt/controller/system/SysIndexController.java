@@ -3,16 +3,13 @@ package com.example.dtt.controller.system;
 import com.alibaba.fastjson.JSONObject;
 import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.SsoHttpConstants;
-import com.example.dtt.domain.AjaxResult;
 import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.exception.GlobalException;
 import com.example.dtt.service.system.ISysConfigService;
 import com.example.dtt.service.system.ISysUserService;
 import com.example.dtt.utils.SecurityUtils;
-import com.example.dtt.utils.StringUtils;
 import com.example.dtt.utils.http.HttpReqUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,14 +55,11 @@ public class SysIndexController {
         String userName = "";
         String password = "";
         //获取统一登录token
-        String tokenUrl = SsoHttpConstants.TEST_TOKEN_URL;
-       // String tokenUrl = SsoHttpConstants.PRO_TOKEN_URL;
+        String tokenUrl = SsoHttpConstants.PRO_TOKEN_URL;
         //token 参数
         Map<String, Object> tokenParams = new HashMap<>();
-        tokenParams.put("appKey", SsoHttpConstants.TEST_APP_KEY);
-        tokenParams.put("appSecret", SsoHttpConstants.TEST_APP_KEY);
-       /* tokenParams.put("appKey", SsoHttpConstants.PRO_APP_KEY);
-        tokenParams.put("appSecret", SsoHttpConstants.PRO_APP_SECRET);*/
+        tokenParams.put("appKey", SsoHttpConstants.PRO_APP_KEY);
+        tokenParams.put("appSecret", SsoHttpConstants.PRO_APP_SECRET);
         try {
             tokenResult = HttpReqUtils.getPostToken(tokenUrl, tokenParams);
             if (tokenResult == null) {
@@ -81,11 +75,9 @@ public class SysIndexController {
             System.out.println("ST=========="+st);
             //携带token及st获取用户信息
             Map<String, Object> userParams = new HashMap<>();
-            userParams.put("appId", SsoHttpConstants.TEST_APP_KEY);
-           // userParams.put("appId", SsoHttpConstants.PRO_APP_KEY);
+            userParams.put("appId", SsoHttpConstants.PRO_APP_KEY);
             userParams.put("st", st);
-            userResult = HttpReqUtils.getPostUser(SsoHttpConstants.TEST_USER_URL, userParams, token);
-           // userResult = HttpReqUtils.getPostUser(SsoHttpConstants.PRO_USER_URL, userParams, token);
+            userResult = HttpReqUtils.getPostUser(SsoHttpConstants.PRO_USER_URL, userParams, token);
             if (userResult == null || !SsoHttpConstants.SUCCESS.equals(userResult.getString("result"))) {
                 new GlobalException("携带token与st获取用户信息失败！");
             }
@@ -118,8 +110,7 @@ public class SysIndexController {
             e.printStackTrace();
             new GlobalException("请校验是否获取token或解析返回JSON是否异常！");
         }
-
-        resp.sendRedirect(SsoHttpConstants.LOCAL_PATH+"userName=" + userName + "&password=" + password);
-        //resp.sendRedirect(SsoHttpConstants.PRO_PATH+"userName=" + userName + "&password=" + password);
+        resp.sendRedirect(SsoHttpConstants.PRO_PATH+"userName=" + userName + "&password=" + password);
+       //return ;
     }
 }

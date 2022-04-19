@@ -3,7 +3,7 @@ package com.example.dtt.service.system.impl;
 import com.example.dtt.annotation.DataSource;
 import com.example.dtt.constant.Constants;
 import com.example.dtt.constant.system.UserConstants;
-import com.example.dtt.datasources.redis.RedisCache;
+import com.example.dtt.datasource.redis.RedisCache;
 import com.example.dtt.domain.system.SysConfig;
 import com.example.dtt.enums.DataSourceType;
 import com.example.dtt.exception.ServiceException;

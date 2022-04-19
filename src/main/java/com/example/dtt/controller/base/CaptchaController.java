@@ -2,7 +2,7 @@ package com.example.dtt.controller.base;
 
 import com.example.dtt.common.config.DttConfig;
 import com.example.dtt.constant.Constants;
-import com.example.dtt.datasources.redis.RedisCache;
+import com.example.dtt.datasource.redis.RedisCache;
 import com.example.dtt.domain.AjaxResult;
 import com.example.dtt.service.system.ISysConfigService;
 import com.example.dtt.utils.sign.Base64;

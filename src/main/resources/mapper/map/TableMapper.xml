@@ -51,12 +51,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<select id="selectTableByTableName" parameterType="String" resultMap="TableResult">
 		<include refid="selectTableVo"/>
-		where tbl_name = #{tableName}
+		where CONCAT(d.`NAME`,'.',t.TBL_NAME) = #{tableName}
 	</select>
 
 	<select id="selectByTableId" parameterType="Long" resultMap="TableResult">
 		<include refid="selectTableVo"/>
 		where t.TBL_ID = #{tableId}
+	</select>
+
+	<select id="selectByTableName" parameterType="String" resultMap="TableResult">
+		<include refid="selectTableVo"/>
+		where CONCAT(d.`NAME`,'.',t.TBL_NAME) = #{tableName}
 	</select>
 
 </mapper>

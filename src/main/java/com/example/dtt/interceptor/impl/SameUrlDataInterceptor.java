@@ -3,7 +3,7 @@ package com.example.dtt.interceptor.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.dtt.annotation.RepeatSubmit;
 import com.example.dtt.constant.Constants;
-import com.example.dtt.datasources.redis.RedisCache;
+import com.example.dtt.datasource.redis.RedisCache;
 import com.example.dtt.filter.RepeatedlyRequestWrapper;
 import com.example.dtt.interceptor.RepeatSubmitInterceptor;
 import com.example.dtt.utils.StringUtils;

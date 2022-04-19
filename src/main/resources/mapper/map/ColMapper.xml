@@ -18,6 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where c.TBL_ID= #{tableId}
 	</select>
 
+	<select id="selectColByTblName" parameterType="String" resultMap="ColResult">
+		select TBL_ID,COLUMN_NAME,TYPE_NAME,COMMENT from COLUMNS_V2 a
+			INNER JOIN SDS b on a.CD_ID = b.CD_ID
+			INNER JOIN TBLS c on b.SD_ID = c.SD_ID
+			LEFT JOIN DBS d on c.DB_ID=d.DB_ID
+		where CONCAT(d.`NAME`,'.',c.TBL_NAME)= #{tableName}
+	</select>
+
 
 	<select id="ColsByTblId" parameterType="Long" resultMap="ColResult">
 		select TBL_ID,CONCAT(COLUMN_NAME,'(',TYPE_NAME,')','   ',IFNULL(COMMENT,'')) as COLUMN_NAME,TYPE_NAME,COMMENT from COLUMNS_V2 a

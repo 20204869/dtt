@@ -1,6 +1,7 @@
 package com.example.dtt.domain;
 
 import com.example.dtt.constant.HttpStatus;
+import com.example.dtt.constant.datasource.Status;
 import com.example.dtt.utils.StringUtils;
 
 import java.util.HashMap;
@@ -26,6 +27,18 @@ public class AjaxResult extends HashMap<String, Object>
      */
     public AjaxResult()
     {
+    }
+
+    public boolean isFailed() {
+        return !this.isSuccess();
+    }
+
+    public boolean isSuccess() {
+        return this.isStatus(Status.SUCCESS);
+    }
+
+    public boolean isStatus(Status status) {
+        return this.get("code") != null && this.get("code").equals(status.getCode());
     }
 
     /**

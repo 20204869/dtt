@@ -2,6 +2,7 @@ package com.example.dtt.service.map;
 
 
 import com.example.dtt.domain.entity.map.Target;
+import com.example.dtt.domain.entity.system.SysUser;
 
 import java.util.List;
 
@@ -11,8 +12,20 @@ import java.util.List;
  * @describe 指标 数据服务层
  */
 public interface TargetService {
+
+    /**
+     * 导入指标数据
+     *
+     * @param targetList
+     * @param isUpdateSupport
+     * @param operName
+     * @return
+     */
+    String importTarget(List<Target> targetList, Boolean isUpdateSupport, String operName);
+
     /**
      * 分页查询指标列表
+     *
      * @param target
      * @return
      */
@@ -20,6 +33,7 @@ public interface TargetService {
 
     /**
      * 新增指标
+     *
      * @param target
      * @return
      */
@@ -27,6 +41,7 @@ public interface TargetService {
 
     /**
      * 更新指标
+     *
      * @param target
      * @return
      */
@@ -34,6 +49,7 @@ public interface TargetService {
 
     /**
      * 删除指标
+     *
      * @param targetId
      * @return
      */
@@ -41,6 +57,7 @@ public interface TargetService {
 
     /**
      * 指标名称不可重复
+     *
      * @param targetName
      * @return
      */
@@ -48,6 +65,7 @@ public interface TargetService {
 
     /**
      * 根据指标编号获取指标详情
+     *
      * @param targetId
      * @return
      */
@@ -55,6 +73,7 @@ public interface TargetService {
 
     /**
      * 根据结果表查询指标信息
+     *
      * @param resultTable
      * @return
      */

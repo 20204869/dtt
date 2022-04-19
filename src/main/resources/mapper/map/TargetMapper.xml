@@ -1,121 +1,142 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.dtt.mapper.map.TargetMapper">
 
-	<resultMap type="com.example.dtt.domain.entity.map.Target" id="TargetResult">
-		<result property="targetId"     column="target_id"    />
-		<result property="targetName"     column="target_name"    />
-		<result property="targetCal"     column="target_cal"    />
-		<result property="handerSys"     column="handler_sys"    />
-		<result property="handerUser"     column="handle_user"    />
-		<result property="demandSide"     column="demand_side"    />
-		<result property="demandUser"     column="demand_user"    />
-		<result property="resultTable"     column="result_table"    />
-		<result property="remark"     column="remark"    />
-		<result property="createTime"     column="create_time"    />
-		<result property="updateTime"     column="update_time"    />
-		<result property="createBy"     column="create_by"    />
-		<result property="updateBy"     column="update_by"    />
-	</resultMap>
+    <resultMap type="com.example.dtt.domain.entity.map.Target" id="TargetResult">
+        <result property="targetId" column="target_id"/>
+        <result property="targetName" column="target_name"/>
+        <result property="targetCal" column="target_cal"/>
+        <result property="demandCal" column="demand_cal"/>
+        <result property="handerSys" column="handler_sys"/>
+        <result property="handerUser" column="handle_user"/>
+        <result property="demandSide" column="demand_side"/>
+        <result property="demandUser" column="demand_user"/>
+        <result property="resultTable" column="result_table"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
 
-	<sql id="selectTargetVo">
-		select target_id,target_name,target_cal,handler_sys,handle_user, demand_side,demand_user,result_table,remark,create_time,update_time,create_by,update_by from sys_target
-	</sql>
+    <sql id="selectTargetVo">
+        select target_id,demand_side,target_name,target_cal,demand_cal,
+               handler_sys,
+               handle_user,
+               demand_user,
+               result_table,
+               remark,
+               create_time,
+               update_time,
+               create_by,
+               update_by
+        from sys_target
+    </sql>
 
-	<select id="selectTargetList" parameterType="com.example.dtt.domain.entity.map.Target" resultMap="TargetResult">
-		<include refid="selectTargetVo"/>
-		where del_flag='0'
-		<if test="targetName != null and targetName != ''">
-			AND target_name like concat('%', #{targetName}, '%')
-		</if>
-		<if test="resultTable != null and resultTable != ''">
-			AND result_table like concat('%', #{resultTable}, '%')
-		</if>
-		<if test="demandSide != null and demandSide != ''">
-			AND demand_side like concat('%', #{demandSide}, '%')
-		</if>
-		<if test="demandUser != null and demandUser != ''">
-			AND demand_user like concat('%', #{demandUser}, '%')
-		</if>
-		<if test="targetCal != null and targetCal != ''">
-			AND target_cal like concat('%', #{targetCal}, '%')
-		</if>
-		<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
-			AND date_format(create_time,'%y%m%d') >= date_format(#{params.beginTime},'%y%m%d')
-		</if>
-		<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
-			AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
-		</if>
-		<!-- 数据范围过滤 -->
-		${params.dataScope}
-	</select>
+    <select id="targetByName" parameterType="String" resultMap="TargetResult">
+        <include refid="selectTargetVo"/>
+        where del_flag='0' and target_name = #{targetName}
+    </select>
 
-	<select id="getTargetDetailById" parameterType="Long" resultMap="TargetResult">
-		<include refid="selectTargetVo"/>
-		where del_flag='0' and target_id = #{targetId}
-	</select>
+    <select id="selectTargetList" parameterType="com.example.dtt.domain.entity.map.Target" resultMap="TargetResult">
+        <include refid="selectTargetVo"/>
+        where del_flag='0'
+        <if test="targetName != null and targetName != ''">
+            AND target_name like concat('%', #{targetName}, '%')
+        </if>
+        <if test="resultTable != null and resultTable != ''">
+            AND result_table like concat('%', #{resultTable}, '%')
+        </if>
+        <if test="demandSide != null and demandSide != ''">
+            AND demand_side like concat('%', #{demandSide}, '%')
+        </if>
+        <if test="demandUser != null and demandUser != ''">
+            AND demand_user like concat('%', #{demandUser}, '%')
+        </if>
+        <if test="targetCal != null and targetCal != ''">
+            AND target_cal like concat('%', #{targetCal}, '%')
+        </if>
+        <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+            AND date_format(create_time,'%y%m%d') >= date_format(#{params.beginTime},'%y%m%d')
+        </if>
+        <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+            AND date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+    </select>
+
+    <select id="getTargetDetailById" parameterType="Long" resultMap="TargetResult">
+        <include refid="selectTargetVo"/>
+        where del_flag='0' and target_id = #{targetId}
+    </select>
 
 
-	<select id="getTargetDetailByTable" parameterType="String" resultMap="TargetResult">
-		<include refid="selectTargetVo"/>
-		where del_flag='0' and result_table = #{resultTable}
-	</select>
+    <select id="getTargetDetailByTable" parameterType="String" resultMap="TargetResult">
+        <include refid="selectTargetVo"/>
+        where del_flag='0' and result_table = #{resultTable}
+    </select>
 
-	<delete id="deleteTarget" parameterType="Long">
-		update sys_target set del_flag = '1' where target_id in
-		<foreach collection="array" item="targetId" open="(" separator="," close=")">
-			#{targetId}
-		</foreach>
-	</delete>
+    <delete id="deleteTarget" parameterType="Long">
+        update sys_target set del_flag = '1' where target_id in
+        <foreach collection="array" item="targetId" open="(" separator="," close=")">
+            #{targetId}
+        </foreach>
+    </delete>
 
-	<update id="updateTarget" parameterType="Target">
-		update sys_target
-		<set>
-			<if test="targetName != null and targetName != ''">target_name = #{targetName},</if>
-			<if test="targetCal != null and targetCal != ''">target_cal = #{targetCal},</if>
-			<if test="handerSys != null and handerSys !=''">handler_sys = #{handerSys},</if>
-			<if test="handerUser != null ">handle_user = #{handerUser},</if>
-			<if test="demandSide != null and demandSide != ''">demand_side = #{demandSide},</if>
-			<if test="demandUser != null and demandUser != ''">demand_user = #{demandUser},</if>
-			<if test="resultTable != null and resultTable != ''">result_table = #{resultTable},</if>
-			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
-			<if test="remark != null">remark = #{remark},</if>
-			update_time = sysdate()
-		</set>
-		where target_id = #{targetId}
-	</update>
+    <update id="updateTarget" parameterType="Target">
+        update sys_target
+        <set>
+            <if test="targetId != null ">target_id = #{targetId},</if>
+            <if test="demandSide != null and demandSide != ''">demand_side = #{demandSide},</if>
+            <if test="targetName != null and targetName != ''">target_name = #{targetName},</if>
+            <if test="targetCal != null and targetCal != ''">target_cal = #{targetCal},</if>
+            <if test="demandCal != null and demandCal != ''">demand_cal = #{demandCal},</if>
+            <if test="handerUser != null and handerUser != ''">handle_user = #{handerUser},</if>
+            <if test="handerSys != null and handerSys !=''">handler_sys = #{handerSys},</if>
+            <if test="demandUser != null and demandUser != ''">demand_user = #{demandUser},</if>
+            <if test="resultTable != null and resultTable != ''">result_table = #{resultTable},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where target_id = #{targetId}
+    </update>
 
-	<insert id="saveTarget" parameterType="Target" useGeneratedKeys="true" keyProperty="targetId">
-		insert into sys_target(
-		<if test="targetId != null and targetId != '' ">target_id,</if>
-		<if test="targetName != null and targetName != '' ">target_name,</if>
-		<if test="targetCal != null and targetCal != ''">target_cal,</if>
-		<if test="handerSys != null and handerSys != ''">handler_sys,</if>
-		<if test="handerUser != null and handerUser != ''">handle_user,</if>
-		<if test="demandSide != null and demandSide != ''">demand_side,</if>
-		<if test="demandUser != null and demandUser != ''">demand_user,</if>
-		<if test="resultTable != null and resultTable != ''">result_table,</if>
-		<if test="createBy != null and createBy != ''">create_by,</if>
-		<if test="remark != null and remark != ''">remark,</if>
-		create_time
-		)values(
-		<if test="targetId != null and targetId != ''">#{targetId},</if>
-		<if test="targetName != null and targetName != ''">#{targetName},</if>
-		<if test="targetCal != null and targetCal != ''">#{targetCal},</if>
-		<if test="handerSys != null and handerSys != ''">#{handerSys},</if>
-		<if test="handerUser != null and handerUser != ''">#{handerUser},</if>
-		<if test="demandSide != null and demandSide != ''">#{demandSide},</if>
-		<if test="demandUser != null and demandUser != ''">#{demandUser},</if>
-		<if test="resultTable != null and resultTable != ''">#{resultTable},</if>
-		<if test="createBy != null and createBy != ''">#{createBy},</if>
-		<if test="remark != null and remark != ''">#{remark},</if>
-		sysdate()
-		)
-	</insert>
+    <insert id="saveTarget" parameterType="Target" useGeneratedKeys="true" keyProperty="targetId">
+        insert into sys_target(
+        <if test="demandSide != null and demandSide != ''">demand_side,</if>
+        <if test="targetName != null and targetName != '' ">target_name,</if>
+        <if test="targetCal != null and targetCal != ''">target_cal,</if>
+        <if test="demandCal != null and demandCal != ''">demand_cal,</if>
+        <if test="demandUser != null and demandUser != ''">demand_user,</if>
+        <if test="handerUser != null and handerUser != ''">handle_user,</if>
+        <if test="handerSys != null and handerSys != ''">handler_sys,</if>
+        <if test="resultTable != null and resultTable != ''">result_table,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        create_time
+        )values(
+        <if test="demandSide != null and demandSide != ''">#{demandSide},</if>
+        <if test="targetName != null and targetName != ''">#{targetName},</if>
+        <if test="targetCal != null and targetCal != ''">#{targetCal},</if>
+        <if test="demandCal != null and demandCal != ''">#{demandCal},</if>
+        <if test="demandUser != null and demandUser != ''">#{demandUser},</if>
+        <if test="handerUser != null and handerUser != ''">#{handerUser},</if>
+        <if test="handerSys != null and handerSys != ''">#{handerSys},</if>
+        <if test="resultTable != null and resultTable != ''">#{resultTable},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        sysdate()
+        )
+    </insert>
 
-	<select id="checkTargetName" parameterType="String" resultType="int">
-		select count(1) from sys_target where del_flag='0' and target_name = #{targetName} limit 1
-	</select>
+    <select id="checkTargetName" parameterType="String" resultType="int">
+        select count(1)
+        from sys_target
+        where del_flag = '0'
+          and target_name = #{targetName} limit 1
+    </select>
 </mapper>

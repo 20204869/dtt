@@ -34,6 +34,15 @@ export function getTableDetail(tableId) {
   })
 }
 
+
+// 查询表 详细信息
+export function getTableDetails(tableName) {
+  return request({
+    url: '/map/meta/metaTables/' + tableName,
+    method: 'get'
+  })
+}
+
 export function getTableList(dbId) {
   return request({
     url: '/map/meta/tableList/' + dbId,
@@ -48,7 +57,13 @@ export function colList(tableId) {
     method: 'get'
   })
 }
-
+//通过表名查询表信息
+export function getTable(tableName) {
+  return request({
+    url: '/map/meta/table/' + tableName,
+    method: 'get'
+  })
+}
 
 // 查询表关系 详细信息
 export function getTableRelation(tableName) {

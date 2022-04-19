@@ -1,7 +1,7 @@
 package com.example.dtt.aspectj;
 
 import com.example.dtt.annotation.DataSource;
-import com.example.dtt.datasources.DynamicDataSourceContextHolder;
+import com.example.dtt.datasource.DynamicDataSourceContextHolder;
 import com.example.dtt.utils.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

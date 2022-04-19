@@ -38,4 +38,6 @@ public interface TableService {
      * @return
      */
     Table selectByTableId(Long tableId);
+
+    Table selectByTableName(String tableName);
 }

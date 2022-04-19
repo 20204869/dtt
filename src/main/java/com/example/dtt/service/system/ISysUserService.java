@@ -9,6 +9,17 @@ import java.util.List;
  */
 public interface ISysUserService {
     /**
+     * 根据模板查询用户信息
+     * @param id
+     * @return
+     */
+    List<SysUser> selectUsersById(Long id);
+    /**
+     * 查询所有用户
+     * @return
+     */
+    List<SysUser> selectUserAll();
+    /**
      * 根据条件分页查询用户列表
      *
      * @param user 用户信息
@@ -140,6 +151,15 @@ public interface ISysUserService {
      * @param roleIds 角色组
      */
     void insertUserAuth(Long userId, Long[] roleIds);
+
+
+    /**
+     * 用户配置取数模板
+     *
+     * @param userId  用户ID
+     * @param templateIds 取数模板
+     */
+    void insertUserTemplate(Long userId, Long[] templateIds);
 
     /**
      * 修改用户状态

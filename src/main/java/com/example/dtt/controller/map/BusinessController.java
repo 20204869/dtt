@@ -1,14 +1,8 @@
 package com.example.dtt.controller.map;
 
-import com.example.dtt.annotation.DataSource;
 import com.example.dtt.controller.base.BaseController;
 import com.example.dtt.domain.AjaxResult;
-import com.example.dtt.domain.entity.map.Cols;
-import com.example.dtt.domain.entity.map.DB;
-import com.example.dtt.domain.entity.map.Table;
-import com.example.dtt.domain.page.TableDataInfo;
-import com.example.dtt.enums.DataSourceType;
-import com.example.dtt.service.map.*;
+import com.example.dtt.service.map.BusinessService;
 import com.example.dtt.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 界面展示表信息

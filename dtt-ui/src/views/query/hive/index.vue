@@ -4,7 +4,7 @@
       <div class="right">
         <div style="display: flex;">
            <img @click="ChangeDown()" src="@/assets/images/left.png" />
-           <h1>{{dbNameShow}}</h1>
+           {{dbNameShow}}
         </div>
         <el-row>
          <el-col>
@@ -16,7 +16,7 @@
             prefix-icon="el-icon-search"
             style="margin-bottom: 20px"
             />
-        <div style="height:765px;width:350px;overflow:scroll;">
+        <div style="height:800px;overflow:scroll;">
           <el-tree
             :data="DbOptions"
             :props="defaultProps"
@@ -30,7 +30,7 @@
         </el-col>
        </el-row>
       </div>
-      <div class="center" style="overflow:scroll;">
+      <div class="center" style="height:880px;overflow:scroll;overflow-x: hidden;overflow-y: scroll;overflow: hidden;position: relative;">
         <div style="padding: 10px 10px 0;margin-bottom: 20px">
           <el-button
             v-if="sqlExecuting"
@@ -55,16 +55,7 @@
             icon="el-icon-brush"
             type="primary"
             size="medium"
-            @click="autoFormatSelection">SQL格式化</el-button>
-          <el-dropdown style="margin-left: 10px" @command="handleCommand">
-            <el-button size="medium" type="primary">
-              <i class="el-icon-arrow-down el-icon--right el-icon-download"></i>下载
-            </el-button>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="all-select">导出CSV</el-dropdown-item>
-              <el-dropdown-item command="all-excel">导出Excel</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+            @click="autoFormatSelection">格式化</el-button>
         </div>
        <!-- <div class="sql-box">
           <SqlEditor
@@ -84,20 +75,55 @@
           </div>
         </div>
       <div class="btn_switch">
-               <button class="btn_anniu" @click="change(0)" :class="{ newStyle:0===number}">查询结果</button>
-               <button class="btn_anniu" @click="change(1)" :class="{ newStyle:1===number}">历史查询</button>
+          <button class="btn_anniu" @click="change(0)" :class="{ newStyle:0===number}">历史查询</button>
+          <button class="btn_anniu" @click="change(1)" :class="{ newStyle:1===number}">结果</button>
+          <button class="btn_anniu" @click="change(2)" :class="{ newStyle:2===number}">日志</button>
       </div>
       <div style="width:100%;height:5px;background:#ededee;"></div>
-      <template v-if="0===number">
-           <span>查询结果</span>
+      <template v-if="0===number" style="background:#ededee;">
+        <el-table :data="sqls">
+          <el-table-column label="间隔" align="center" key="times" prop="times" width="100"/>
+          <el-table-column label="SQL" align="center" show-overflow-tooltip>
+             <template slot-scope="scope" >
+               <div>
+                <a @click="queryNodeClick(scope.row)" style="color:blue;cursor:pointer">{{scope.row.querySql}}</a>
+               </div>
+             </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
       </template>
       <template v-else-if="1===number">
-            <span>历史查询</span>
+       <el-tabs type="border-card" style="height: 99%">
+          <el-button style="margin-bottom:10px;" type="primary" size="mini" @click="doExport2Excel">导出结果(Excel)</el-button>
+            <el-table
+              :data="sqlResult"
+              border
+              :style="{width: '100%'}">
+              <el-table-column
+                v-for="item in columns"
+                :key="item.value"
+                :prop="item.value"
+                :label="item.label"
+                show-overflow-tooltip
+                width="180"
+                align="center"
+              />
+            </el-table>
+        </el-tabs>
+      </template>
+      <template v-else-if="2===number">
+         <span>暂无</span>
       </template>
       </div>
-      <div class="left">
-
-      <div style="height:880px;width:350px;overflow:scroll;">
+      <div class="left" style="visibility: hidden;">
+        <div id = "col" style="height:880px;overflow:scroll;">
           <el-tree
             :data="cols"
             :props="colsProps"
@@ -111,7 +137,11 @@
 </div>
 </template>
 <script>
-import { treeselect ,getTableList ,colList } from "@/api/map/meta";
+import { treeselect , getTableList ,colList } from "@/api/map/meta";
+import { historyQuery , addQuery ,executeSql } from "@/api/query/query";
+
+import { exportExcelByDom, export_json_to_excel } from "@/utils/Export2Excel";
+
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import fileSaver from "file-saver";
@@ -138,8 +168,17 @@ export default {
    },
   data() {
     return {
+      dialogs: {
+         configuration: {
+         title: "动态列表配置",
+         data: "",
+         show: false
+         }
+      },
+      fullHeight: document.documentElement.clientHeight,
       number:0,
       code: "",
+      form:{},
       cmOptions: {
         mode: "text/x-sql", //实现Java代码高亮
         lineNumbers: true,
@@ -172,6 +211,12 @@ export default {
       // 表单参数
       cols: undefined,
       dbNameShow:"Hive",
+      sqls:undefined,
+      sqlResult:[],
+      columns: [],
+      queryProps: {
+        label: "querySql"
+      },
       defaultProps: {
         label: "dbName"
       },
@@ -181,7 +226,9 @@ export default {
       // 查询参数
       queryParams: {
         dbId: undefined,
-        tableId: undefined
+        tableId: undefined,
+        pageNum: 1,
+        pageSize: 30,
       },
     };
   },
@@ -199,6 +246,17 @@ export default {
      })
    },
   watch: {
+    //监控浏览器高度变化
+    fullHeight(val){
+      if(!this.timer){
+        this.fullHeight = val
+        this.timer =true
+        let that = this
+        setTimeout(function(){
+          that.timer = false
+        },100)
+      }
+    },
     // 根据名称筛选库
     name(val) {
       if (this.defaultProps.label === 'dbName') {
@@ -227,8 +285,40 @@ export default {
   },
   created() {
     this.getTreeselect();
+    this.historyQuery();
+    this.get_bodyHeight();
   },
    methods: {
+    doExport2Excel() {
+      const tHeader = [];
+      const keyArray = [];
+      this.columns.forEach(item => {
+        tHeader.push(item.label);
+       // keyArray.push(item.key);
+        keyArray.push(item.label);
+      });
+      // 这里 jsonData 应该是所要导出的所有数据，可让后端传值
+      const jsonData = this.sqlResult;
+      export_json_to_excel(tHeader, keyArray, jsonData, "查询结果");
+    },
+   //动态获取浏览器高度
+   get_bodyHeight () {//动态获取浏览器高度
+   				const that = this
+   				window.onresize = () => {
+   					return (() => {
+   						window.fullHeight = document.documentElement.clientHeight
+   						that.fullHeight = window.fullHeight
+   					})()
+   				}
+   			},
+    historyQuery() {
+          this.loading = true;
+         historyQuery(this.addDateRange(this.queryParams)).then(response => {
+           this.sqls = response.rows;
+           this.total = response.total;
+           this.loading = false;
+         });
+       },
       //切换按钮
       change:function(index){
          this.number=index;
@@ -278,19 +368,36 @@ export default {
       let str = sqlFormatter.format(this.codemirror.getValue(), {language: 'sql'});
       this.codemirror.setValue(str);
     },
-      //下载查询结果
-    handleCommand(command) {
-      //TODO 下载查询数据
-      },
-        //执行SQL
-      doExecutorSql() {
-           //TODO SQL执行接口
-             },
-      //取消执行SQL
-      cancelExecutorSql() {
-             this.sqlExecuting = false;
+    //执行SQL
+    doExecutorSql() {
+      if(this.code ==  "" ){
+        this.$modal.msgError("执行SQL不能为空！");
+       } else {
+        this.form.querySql = this.code;
+        //保存执行的SQL语句
+        addQuery(this.form).then(response => {
+          this.open = false;
+        });
+        //执行SQL查询
+        executeSql(this.form).then(response => {
+            this.sqlResult = response.sqlResult;
+            const obj = { ...this.sqlResult[0] }
+              for(let key in obj) {
+                this.columns.push({
+                 label: key,
+                 value: key
+                })
+              }
+            this.number = 1;
+            this.open = false;
+        });
+      }
+     },
+    //取消执行SQL
+    cancelExecutorSql() {
+      this.sqlExecuting = false;
              //TODO 调后台接口
-           },
+      },
       ChangeDown () {
         treeselect().then(response => {
           this.DbOptions = response.data;
@@ -321,6 +428,10 @@ export default {
       if (!value) return true;
       return data.dbName.indexOf(value) !== -1;
     },
+      // 历史查询单击事件
+    queryNodeClick(row) {
+        this.code = row.querySql
+    },
     // 节点单击事件
     handleNodeClick(data) {
       this.queryParams.dbId = data.dbId;
@@ -339,6 +450,7 @@ export default {
           }else{
            colList(data.tableId).then(response => {
                this.cols = response.cols;
+               document.getElementById('col').style.visibility = "visible";
              });
           }
       }
@@ -352,23 +464,23 @@ export default {
     display: flex;
     height: 100%;
     width: 100%;
+
 }
 .right{
-  width: 350px;
+  width: 260px;
 }
 .center{
 flex: 1;
 height:91vh;
 }
 .left{
-    width: 350px;
+    width: 260px;
     height: 91vh;
 }
 .sql-box{
   width:98%;
   border: 2px solid #ddd;
 }
-
 
 html,
 body {
@@ -419,7 +531,7 @@ header > span {
   line-height: inherit;
 }
 .btn_anniu{
-    width: 50%;
+    width: 33%;
     padding: 10px;
     font-size: 15px;
     font-weight: bold;

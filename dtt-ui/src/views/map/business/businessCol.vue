@@ -1,13 +1,15 @@
 <template>
     <div>
       <div class ="mytest">
-          <el-button type="primary" @click="close()" >返回</el-button>
+          <img style="width: 55px;height: 55px;" src="../../../assets/images/table.png"></img>
           <p><h1>
           {{Cols[0].tableName}}
           </h1></p>
+          <label style="width: 75%"></label>
+          <el-button type="primary" class="search-btn" @click="close()" >返回</el-button>
       </div>
            <div>
-              <el-table :data="Cols" height="800" border :row-style="tableRowStyle" :header-cell-style="tableHeaderColor" style="width: 100%">
+              <el-table :data="Cols" height="780px" border :row-style="tableRowStyle" :header-cell-style="tableHeaderColor" style="width: 100%">
                 <el-table-column label="表字段" align="center" key="colName" prop="colName" v-if="columns[0].visible" />
                 <el-table-column label="注释" align="center" key="colComment" prop="colComment" v-if="columns[1].visible" :show-overflow-tooltip="true" />
               </el-table>
@@ -43,7 +45,7 @@ name: "Cols",
       },
     //设置表头行的样式
     tableHeaderColor({row,column,rowIndex,columnIndex}){
-    return 'background-color:#f0892e;color:#fff;font-wight:400;font-size:15px;text-align:center'
+    return 'background-color:#9CB0C8;color:#fff;font-wight:400;font-size:15px;text-align:center'
     },
   },
   mounted() {

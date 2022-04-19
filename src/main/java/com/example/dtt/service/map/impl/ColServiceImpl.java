@@ -33,4 +33,9 @@ public class ColServiceImpl implements ColService {
     public List<Cols> ColsByTblId(Long tblId) {
         return colMapper.ColsByTblId(tblId);
     }
+
+    @Override
+    public List<Cols> selectColByTblName(String tblName) {
+        return colMapper.selectColByTblName(tblName);
+    }
 }

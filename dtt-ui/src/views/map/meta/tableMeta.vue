@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getTableDetail , getTableRelation } from "@/api/map/meta";
+import { getTableDetail ,getTableDetails, getTableRelation } from "@/api/map/meta";
 const echarts = require('echarts')
 
 export default {
@@ -158,9 +158,10 @@ name: "Cols",
    },
   created() {
       const tableId = this.$route.params && this.$route.params.tableId;
-      if (tableId) {
+      const tableName = this.$route.params && this.$route.params.tableName;
+      if (tableName) {
         this.loading = true;
-        getTableDetail(tableId).then((response) => {
+        getTableDetails(tableName).then((response) => {
           this.form = response.table;
           this.cols = response.cols;
           this.$nextTick(() => {

@@ -169,7 +169,7 @@
             width="160"
             class-name="small-padding fixed-width"
           >
-            <template slot-scope="scope" v-if="scope.row.userId !== 1">
+            <template slot-scope="scope" >
               <el-button
                 size="mini"
                 type="text"
@@ -193,6 +193,8 @@
                     v-hasPermi="['system:user:resetPwd']">重置密码</el-dropdown-item>
                   <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
                     v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
+                  <el-dropdown-item command="handleAuthTemplate" icon="el-icon-circle-check"
+                    v-hasPermi="['system:user:edit']">分配取数模板</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -560,6 +562,9 @@ export default {
         case "handleAuthRole":
           this.handleAuthRole(row);
           break;
+        case "handleAuthTemplate":
+          this.handleAuthTemplate(row);
+          break;
         default:
           break;
       }
@@ -610,6 +615,11 @@ export default {
     handleAuthRole: function(row) {
       const userId = row.userId;
       this.$router.push("/system/user-auth/role/" + userId);
+    },
+    /** 分配取数模板 */
+    handleAuthTemplate: function(row) {
+       const userId = row.userId;
+       this.$router.push("/system/user-template/template/" + userId);
     },
     /** 提交按钮 */
     submitForm: function() {

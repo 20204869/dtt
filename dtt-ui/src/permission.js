@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
             }).catch(err => {
               store.dispatch('LogOut').then(() => {
                 Message.error(err)
-                 next({ path: '/' })
+                next({ path: '/' })
               })
             })
           } else {
@@ -71,7 +71,8 @@ router.beforeEach((to, from, next) => {
           router.push({ path: "/" }).catch(()=>{});
         })
       } else {
-        const fullPath = ''
+       // const fullPath = 'https://sso-test.cangoonline.net/?redirectUrl=http://localhost&appId=appManager#/login'
+          const fullPath = 'https://sso.cangoonline.net/?redirectUrl=http://datamanager.cangoonline.net/datamanager&appId=dataManager#/login'
         console.log(fullPath)
         next(false)
         window.location.href = fullPath

@@ -9,6 +9,19 @@ import java.util.List;
  * 用户表 数据层
  */
 public interface SysUserMapper {
+
+    /**
+     * 根据模板查询用户信息
+     * @param id
+     * @return
+     */
+    List<SysUser> selectUsersById(Long id);
+
+    /**
+     * 查询所有用户
+     * @return
+     */
+    List<SysUser> selectUserAll();
     /**
      * 根据条件分页查询用户列表
      *

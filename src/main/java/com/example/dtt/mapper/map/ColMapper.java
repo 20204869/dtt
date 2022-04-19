@@ -25,4 +25,5 @@ public interface ColMapper {
      */
     List<Cols> ColsByTblId(Long tblId);
 
+    List<Cols> selectColByTblName(String tblName);
 }

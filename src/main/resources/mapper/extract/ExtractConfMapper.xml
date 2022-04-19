@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.dtt.mapper.extract.ExtractConfMapper">
+    <sql id="baseSql">
+        id, name, remark, template_sql, demand_side,handler, create_time, update_time,create_by,update_by
+    </sql>
+    <resultMap id="confResult" type="com.example.dtt.domain.entity.extract.ExtractConf">
+        <id     property="id"   column="id" />
+        <result property="templateName" column="name"/>
+        <result property="remark" column="remark" />
+        <result property="templateSql"   column="template_sql"/>
+        <result property="demandSide"   column="demand_side" />
+        <result property="handler"   column="handler" />
+        <result property="createTime" column="create_time"   />
+        <result property="updateTime" column="update_time"   />
+        <result property="createBy" column="create_by"   />
+        <result property="updateBy" column="update_by"   />
+    </resultMap>
+
+    <select id="selectExtractConfByUserId" parameterType="Long" resultMap="confResult">
+        select distinct t.id, t.name, t.remark, t.template_sql, t.demand_side,t.handler, t.create_time, t.update_time,
+                        t.create_by,t.update_by
+        from sys_data_template t
+            left join sys_user_template ut on ut.template_id = t.id
+        WHERE t.del_flag = '0' and ut.user_id = #{userId}
+    </select>
+
+    <insert id="saveConf" parameterType="ExtractConf" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_data_template(
+        <if test="templateName != null and templateName != ''">name,</if>
+        <if test="templateSql != null and templateSql != '' ">template_sql,</if>
+        <if test="demandSide != null and demandSide != ''">demand_side,</if>
+        <if test="handler != null and handler != ''">handler,</if>
+        <if test="createBy != null and createBy != ''">create_by,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        create_time
+        )values(
+        <if test="templateName != null and templateName != ''">#{templateName},</if>
+        <if test="templateSql != null and templateSql != ''">#{templateSql},</if>
+        <if test="demandSide != null and demandSide != ''">#{demandSide},</if>
+        <if test="handler != null and handler != ''">#{handler},</if>
+        <if test="createBy != null and createBy != ''">#{createBy},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        sysdate()
+        )
+    </insert>
+
+    <update id="updateConf" parameterType="ExtractConf">
+        update sys_data_template
+        <set>
+            <if test="templateName != null and templateName != ''">name = #{templateName},</if>
+            <if test="templateSql != null and templateSql !=''">template_sql = #{templateSql},</if>
+            <if test="demandSide != null and demandSide != ''">demand_side = #{demandSide},</if>
+            <if test="handler != null and handler != ''">handler = #{handler},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="confListPaging" resultMap="confResult">
+        select
+        <include refid="baseSql"/>
+        from sys_data_template
+        where del_flag = '0'
+        <if test="templateName != null and templateName != ''">
+            AND CONCAT(IFNULL(`name`,''),IFNULL(demand_side,''),IFNULL(handler,''),IFNULL(create_by,''),IFNULL(update_by,'')) LIKE CONCAT('%', #{templateName},'%')
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
+
+    </select>
+
+    <select id="confListByUserId" resultMap="confResult" parameterType="Long">
+        select
+        <include refid="baseSql"/>
+        from sys_data_template st
+        join sys_user_template ut on st.id = ut.template_id
+        where del_flag = '0'
+        <if test="templateName != null and templateName != ''">
+        AND CONCAT(IFNULL(`name`,''),IFNULL(demand_side,''),IFNULL(handler,''),IFNULL(create_by,''),IFNULL(update_by,'')) LIKE CONCAT('%', #{templateName},'%')
+        </if>
+        AND ut.user_id = #{userId}
+    </select>
+
+    <select id="selectUserListById" parameterType="Long" resultType="Long">
+        select ut.user_id
+        from sys_data_template p
+        inner join sys_user_template ut on ut.template_id = p.id
+        where p.id = #{id}
+    </select>
+
+    <select id="queryConfById" resultMap="confResult">
+        select
+        <include refid="baseSql"/>
+        from sys_data_template
+        where del_flag = '0' and id=#{id}
+    </select>
+
+    <select id="queryConfByName" resultMap="confResult">
+        select
+        <include refid="baseSql"/>
+        from sys_data_template
+        where del_flag = '0' and name=#{templateName}
+    </select>
+
+    <delete id="deleteConfById" parameterType="Long">
+        update sys_data_template set del_flag = '1' where id = #{id}
+    </delete>
+
+    <delete id="deleteConfByIds" parameterType="Long">
+        update sys_data_template set del_flag = '1' where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

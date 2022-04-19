@@ -46,4 +46,9 @@ public class TableServiceImpl implements TableService {
     public Table selectByTableId(Long tableId) {
         return tableMapper.selectByTableId(tableId);
     }
+
+    @Override
+    public Table selectByTableName(String tableName) {
+        return tableMapper.selectByTableName(tableName);
+    }
 }

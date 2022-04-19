@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.query.HistoryQueryMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.query.HistoryQuery" id="HistoryQueryResult">
+		<result property="executor"     column="executor" />
+		<result property="querySql"     column="query_sql" />
+		<result property="times"     column="times" />
+	</resultMap>
+
+	<select id="historyQueryByUserName" parameterType="String" resultMap="HistoryQueryResult">
+		SELECT CONCAT('(',IF(ABS(TimeStampDiff(MINUTE,NOW(),create_time)) <![CDATA[<]]> 60,CONCAT(ABS(TimeStampDiff(MINUTE,NOW(),create_time)),'分钟前'),IF(ABS(TimeStampDiff(HOUR,NOW(),create_time)) <![CDATA[<]]> 24 ,CONCAT(ABS(TimeStampDiff(HOUR,NOW(),create_time)),'小时前'),CONCAT(TimeStampDiff(DAY,create_time,NOW()),'天前'))),')') as times,query_sql FROM history_query
+		WHERE executor=#{executor}
+		ORDER BY create_time DESC
+	</select>
+
+
+	<insert id="saveQuery" parameterType="HistoryQuery" useGeneratedKeys="true" keyProperty="id">
+		insert into history_query(
+		<if test="executor != null and executor != ''">executor,</if>
+		<if test="querySql != null and querySql != ''">query_sql,</if>
+		create_time
+		)values(
+		<if test="executor != null and executor != ''">#{executor},</if>
+		<if test="querySql != null and querySql != ''">#{querySql},</if>
+		sysdate()
+		)
+	</insert>
+
+</mapper>

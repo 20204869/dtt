@@ -117,10 +117,27 @@ export function getAuthRole(userId) {
   })
 }
 
+// 查询授权角色
+export function getAuthTemplate(userId) {
+  return request({
+    url: '/system/user/authTemplate/' + userId,
+    method: 'get'
+  })
+}
+
 // 保存授权角色
 export function updateAuthRole(data) {
   return request({
     url: '/system/user/authRole',
+    method: 'put',
+    params: data
+  })
+}
+
+// 保存授权角色
+export function updateAuthTemplate(data) {
+  return request({
+    url: '/system/user/authTemplate',
     method: 'put',
     params: data
   })

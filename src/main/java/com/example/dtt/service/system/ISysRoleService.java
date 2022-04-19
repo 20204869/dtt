@@ -1,5 +1,6 @@
 package com.example.dtt.service.system;
 
+import com.example.dtt.domain.entity.extract.ExtractConf;
 import com.example.dtt.domain.entity.system.SysRole;
 import com.example.dtt.domain.system.SysUserRole;
 
