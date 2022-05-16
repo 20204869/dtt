@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.tableau.TableauMapper">
+
+    <resultMap type="com.example.dtt.domain.entity.tableau.Workbook" id="tableauResult">
+        <result property="workbookId" column="id"/>
+        <result property="workbookName" column="name"/>
+        <result property="workbookUrl" column="workbook_url"/>
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+    </resultMap>
+
+    <resultMap type="com.example.dtt.domain.entity.tableau.Views" id="tableauViewResult">
+        <result property="viewId" column="id"/>
+        <result property="viewName" column="name"/>
+        <result property="viewUrl" column="view_url"/>
+    </resultMap>
+
+    <select id="allProjects" resultMap="tableauResult">
+        SELECT id,name,workbook_url, project_id, project_name
+        FROM tableau_workbooks
+        where 1=1
+        <if test="projectName != null and projectName != ''">
+            AND project_name like concat('%', #{projectName}, '%')
+        </if>
+    </select>
+
+    <select id="allProject" parameterType="Long" resultMap="tableauResult">
+        SELECT DISTINCT project_id, project_name
+        FROM tableau_workbooks w
+            INNER JOIN user_tableau_project up on w.project_id = up.tableau_project_id
+        where up.user_id = #{userId}
+    </select>
+
+    <select id="workbookByProjectId" parameterType="Long" resultMap="tableauResult">
+        SELECT id, name, workbook_url
+        FROM tableau_workbooks w
+                 INNER JOIN user_tableau_workbook uw on w.id = uw.tableau_workbook_id
+        where uw.user_id = #{userId}
+          and w.project_id = #{projectId}
+    </select>
+
+    <select id="workbookPermissionByUserId" parameterType="Long" resultMap="tableauResult">
+        SELECT id, name, workbook_url,project_id, project_name
+        FROM tableau_workbooks w
+                 INNER JOIN user_tableau_workbook uw on w.id = uw.tableau_workbook_id
+        where uw.user_id = #{userId}
+    </select>
+
+    <select id="viewsByWorkbookId" parameterType="Long" resultMap="tableauViewResult">
+        SELECT id,name,view_url FROM tableau_views
+        where workbook_id = #{workbookId}
+    </select>
+
+    <select id="tableauUrl" parameterType="Long" resultMap="tableauViewResult">
+        SELECT id,name,view_url FROM tableau_views
+        where workbook_id = #{workbook_id}
+        LIMIT 1
+    </select>
+
+</mapper>

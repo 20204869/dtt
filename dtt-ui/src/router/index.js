@@ -116,7 +116,21 @@ export const dynamicRoutes = [
         path: 'template/:userId(\\d+)',
         component: () => import('@/views/system/user/authTemplate'),
         name: 'AuthTemplate',
-        meta: { title: '分配取数模板', activeMenu: '/system/user' }
+        meta: { title: '授权取数模板', activeMenu: '/system/user' }
+      }
+    ]
+  },
+  {
+    path: '/system/user-tableau',
+    component: Layout,
+    hidden: true,
+    permissions: ['system:user:edit'],
+    children: [
+      {
+        path: 'tableau/:userId(\\d+)',
+        component: () => import('@/views/system/user/authTableau'),
+        name: 'AuthTableau',
+        meta: { title: '授权Tableau报表权限', activeMenu: '/system/user' }
       }
     ]
   },

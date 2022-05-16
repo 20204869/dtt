@@ -194,7 +194,9 @@
                   <el-dropdown-item command="handleAuthRole" icon="el-icon-circle-check"
                     v-hasPermi="['system:user:edit']">分配角色</el-dropdown-item>
                   <el-dropdown-item command="handleAuthTemplate" icon="el-icon-circle-check"
-                    v-hasPermi="['system:user:edit']">分配取数模板</el-dropdown-item>
+                    v-hasPermi="['system:user:edit']">授权取数模板</el-dropdown-item>
+                  <el-dropdown-item command="handleAuthTableau" icon="el-icon-circle-check"
+                    v-hasPermi="['system:user:edit']">授权Tableau报表</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -565,6 +567,8 @@ export default {
         case "handleAuthTemplate":
           this.handleAuthTemplate(row);
           break;
+        case "handleAuthTableau":
+          this.handleAuthTableau(row)
         default:
           break;
       }
@@ -620,6 +624,10 @@ export default {
     handleAuthTemplate: function(row) {
        const userId = row.userId;
        this.$router.push("/system/user-template/template/" + userId);
+    },
+    handleAuthTableau: function(row) {
+        const userId = row.userId;
+        this.$router.push("/system/user-tableau/tableau/" + userId);
     },
     /** 提交按钮 */
     submitForm: function() {

@@ -24,7 +24,7 @@
 
         <el-table v-loading="loading" :data="templateList">
           <el-table-column label="编号" align="center" key="id" prop="id" width="100"/>
-          <el-table-column label="模板名" align="center" key="templateName" prop="templateName" width="100"/>
+          <el-table-column label="模板名" align="center" key="templateName" prop="templateName" width="150"/>
           <el-table-column label="IT负责人" align="center" key="handler" prop="handler" width="100"/>
           <el-table-column label="需求方" align="center" key="demandSide" prop="demandSide"  width="150"/>
           <el-table-column label="备注" align="center" key="remark" prop="remark"/>

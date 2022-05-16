@@ -117,7 +117,16 @@ export function getAuthRole(userId) {
   })
 }
 
-// 查询授权角色
+// 查询授权tableau
+export function getAuthTableau(userId,query) {
+  return request({
+    url: '/system/user/authTableau/' + userId,
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询授权模板
 export function getAuthTemplate(userId) {
   return request({
     url: '/system/user/authTemplate/' + userId,
@@ -134,7 +143,16 @@ export function updateAuthRole(data) {
   })
 }
 
-// 保存授权角色
+// 保存授权tableau
+export function updateAuthTableau(data) {
+  return request({
+    url: '/system/user/authTableau',
+    method: 'put',
+    params: data
+  })
+}
+
+// 保存授权模板
 export function updateAuthTemplate(data) {
   return request({
     url: '/system/user/authTemplate',

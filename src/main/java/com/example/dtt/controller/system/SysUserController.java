@@ -7,12 +7,14 @@ import com.example.dtt.domain.AjaxResult;
 import com.example.dtt.domain.entity.extract.ExtractConf;
 import com.example.dtt.domain.entity.system.SysRole;
 import com.example.dtt.domain.entity.system.SysUser;
+import com.example.dtt.domain.entity.tableau.Workbook;
 import com.example.dtt.domain.page.TableDataInfo;
 import com.example.dtt.enums.BusinessType;
 import com.example.dtt.service.extract.ExtractConfService;
 import com.example.dtt.service.system.ISysPostService;
 import com.example.dtt.service.system.ISysRoleService;
 import com.example.dtt.service.system.ISysUserService;
+import com.example.dtt.service.tableau.TableauService;
 import com.example.dtt.utils.SecurityUtils;
 import com.example.dtt.utils.StringUtils;
 import com.example.dtt.utils.poi.ExcelUtil;
@@ -44,6 +46,9 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private ExtractConfService confService;
+
+    @Autowired
+    private TableauService tableauService;
 
     /**
      * 获取用户列表
@@ -170,11 +175,25 @@ public class SysUserController extends BaseController {
     }
 
     /**
+     * 根据用户编号获取授权tableau 报表
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @GetMapping("/authTableau/{userId}")
+    public AjaxResult authTableau(@PathVariable("userId") Long userId,Workbook workbook) {
+        AjaxResult ajax = AjaxResult.success();
+        SysUser user = userService.selectUserById(userId);
+        List<Workbook> workbooks = tableauService.workbookByUserId(userId,workbook);
+        ajax.put("user", user);
+        ajax.put("tableaus", workbooks);
+        return ajax;
+    }
+
+    /**
      * 根据用户编号获取已分配的取数模板
      */
     @PreAuthorize("@ss.hasPermi('system:user:query')")
     @GetMapping("/authTemplate/{userId}")
-    public AjaxResult authTemplat(@PathVariable("userId") Long userId) {
+    public AjaxResult authTemplate(@PathVariable("userId") Long userId) {
         AjaxResult ajax = AjaxResult.success();
         SysUser user = userService.selectUserById(userId);
         List<ExtractConf> confs = confService.extractConfByUserId(userId);
@@ -192,6 +211,18 @@ public class SysUserController extends BaseController {
     public AjaxResult insertAuthRole(Long userId, Long[] roleIds) {
         userService.checkUserDataScope(userId);
         userService.insertUserAuth(userId, roleIds);
+        return success();
+    }
+
+    /**
+     * 用户授权tableau
+     */
+    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+    @Log(title = "用户管理", businessType = BusinessType.GRANT)
+    @PutMapping("/authTableau")
+    public AjaxResult insertAuthTableau(Long userId, Long[] workbookIds,Long[] projectIds) {
+        userService.checkUserDataScope(userId);
+        userService.insertUserTableau(userId, workbookIds,projectIds);
         return success();
     }
 

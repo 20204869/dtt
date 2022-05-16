@@ -4,13 +4,12 @@ import com.example.dtt.annotation.DataScope;
 import com.example.dtt.constant.system.UserConstants;
 import com.example.dtt.domain.entity.system.SysRole;
 import com.example.dtt.domain.entity.system.SysUser;
-import com.example.dtt.domain.system.SysPost;
-import com.example.dtt.domain.system.SysUserPost;
-import com.example.dtt.domain.system.SysUserRole;
-import com.example.dtt.domain.system.SysUserTemplate;
+import com.example.dtt.domain.system.*;
 import com.example.dtt.exception.ServiceException;
 import com.example.dtt.mapper.extract.UserTemplateMapper;
 import com.example.dtt.mapper.system.*;
+import com.example.dtt.mapper.tableau.UserProjectMapper;
+import com.example.dtt.mapper.tableau.UserWorkbookMapper;
 import com.example.dtt.service.system.ISysConfigService;
 import com.example.dtt.service.system.ISysUserService;
 import com.example.dtt.utils.SecurityUtils;
@@ -24,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -54,6 +55,12 @@ public class SysUserServiceImpl implements ISysUserService {
 
     @Autowired
     private UserTemplateMapper templateMapper;
+
+    @Autowired
+    private UserWorkbookMapper workbookMapper;
+
+    @Autowired
+    private UserProjectMapper projectMapper;
 
    /* @Autowired
     protected Validator validator;*/
@@ -296,6 +303,68 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     /**
+     * 用户授权tableau
+     *
+     * @param userId  用户ID
+     * @param workbookIds 工作簿
+     */
+    @Override
+    @Transactional
+    public void insertUserTableau(Long userId, Long[] workbookIds,Long[] projectIds) {
+        projectMapper.deleteUserProjectByUserId(userId);
+        workbookMapper.deleteUserWorkbookByUserId(userId);
+
+        //add user-project
+        insertUserProjects(userId, projectIds);
+        // add user-workbook
+        insertUserWorkbooks(userId, workbookIds);
+    }
+
+    /**
+     * 新增用户取tableau project
+     * @param userId
+     * @param projectIds
+     */
+    public void insertUserProjects(Long userId, Long[] projectIds) {
+        if (StringUtils.isNotNull(projectIds)) {
+            List<Long> projectList = Arrays.stream(projectIds).distinct().collect(Collectors.toList());
+            // 新增用户与tableau project管理
+            List<SysUserProject> list = new ArrayList<>();
+            for (Long workbookId : projectList) {
+                SysUserProject ut = new SysUserProject();
+                ut.setUserId(userId);
+                ut.setProjectId(workbookId);
+                list.add(ut);
+            }
+            if (list.size() > 0) {
+                projectMapper.batchUserProject(list);
+            }
+        }
+    }
+
+    /**
+     * 新增用户取tableau workbook
+     * @param userId
+     * @param workbookIds
+     */
+    public void insertUserWorkbooks(Long userId, Long[] workbookIds) {
+        if (StringUtils.isNotNull(workbookIds)) {
+            // 新增用户与 tableau workbook管理
+            List<SysUserWorkbook> list = new ArrayList<>();
+            for (Long workbookId : workbookIds) {
+                SysUserWorkbook ut = new SysUserWorkbook();
+                ut.setUserId(userId);
+                ut.setWorkbookId(workbookId);
+                list.add(ut);
+            }
+            if (list.size() > 0) {
+                workbookMapper.batchUserWorkbook(list);
+            }
+        }
+    }
+
+
+    /**
      * 用户配置 取数模板
      *
      * @param userId      用户ID
@@ -312,7 +381,7 @@ public class SysUserServiceImpl implements ISysUserService {
      * 新增用户取数模板信息
      *
      * @param userId      用户ID
-     * @param templateIds 角色组
+     * @param templateIds 模板组
      */
     public void insertUserTemplates(Long userId, Long[] templateIds) {
         if (StringUtils.isNotNull(templateIds)) {

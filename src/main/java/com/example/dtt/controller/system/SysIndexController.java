@@ -13,9 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,7 +79,7 @@ public class SysIndexController {
             String token = JSONObject.parseObject(tokenResult.getString("obj")).getString("token");
             //获取st
             String st = request.getQueryString().substring(3);
-            System.out.println("ST=========="+st);
+            System.out.println("ST==========" + st);
             //携带token及st获取用户信息
             Map<String, Object> userParams = new HashMap<>();
             userParams.put("appId", SsoHttpConstants.PRO_APP_KEY);
@@ -102,7 +109,7 @@ public class SysIndexController {
                 saveUser.setUserSn(userSn);
                 userService.insertUser(saveUser);
             }
-            if (SsoHttpConstants.SYS_ADMINISTRATOR_1.equals(userName)){
+            if (SsoHttpConstants.SYS_ADMINISTRATOR_1.equals(userName)) {
                 userName = SsoHttpConstants.SYS_ADMINISTRATOR_U;
                 password = SsoHttpConstants.SYS_ADMINISTRATOR_PW;
             }
@@ -110,7 +117,7 @@ public class SysIndexController {
             e.printStackTrace();
             new GlobalException("请校验是否获取token或解析返回JSON是否异常！");
         }
-        resp.sendRedirect(SsoHttpConstants.PRO_PATH+"userName=" + userName + "&password=" + password);
-       //return ;
+        resp.sendRedirect(SsoHttpConstants.PRO_PATH + "userName=" + userName + "&password=" + password);
+        //return ;
     }
 }

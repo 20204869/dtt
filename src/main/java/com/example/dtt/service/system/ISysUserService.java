@@ -154,6 +154,14 @@ public interface ISysUserService {
 
 
     /**
+     * 配置tableau
+     * @param userId
+     * @param workbookIds
+     * @param projectIds
+     */
+    void insertUserTableau(Long userId, Long[] workbookIds,Long[] projectIds);
+
+    /**
      * 用户配置取数模板
      *
      * @param userId  用户ID

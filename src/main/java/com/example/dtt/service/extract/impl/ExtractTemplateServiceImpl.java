@@ -53,6 +53,7 @@ public class ExtractTemplateServiceImpl implements ExtractTemplateService {
             String preSql = Constants.SQL_ADMIN;
             stmt = connection.prepareStatement(preSql);
             stmt.executeUpdate();
+            //TODO SQL优化处理
             stmt = connection.prepareStatement(executeSql);
             resultSet = stmt.executeQuery();
             result = resultProcess(resultSet);
@@ -78,7 +79,7 @@ public class ExtractTemplateServiceImpl implements ExtractTemplateService {
                 result.add(tmpMap);
             }
         }
-        logger.debug("execute sql result : {}", result);
+       // logger.debug("execute sql result : {}", result);
         return result;
     }
 

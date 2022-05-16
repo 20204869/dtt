@@ -20,6 +20,8 @@ server:
   # 服务器的HTTP端口，8099
   port: 8099
   servlet:
+    session:
+      timeout: 120m
     # 应用的访问路径
     context-path: /
   tomcat:
@@ -33,6 +35,7 @@ server:
       # Tomcat启动初始化的线程数，默认值10
       min-spare: 100
 
+
 # 日志配置
 logging:
   level:
@@ -41,6 +44,9 @@ logging:
 
 # Spring配置
 spring:
+  jackson:
+    time-zone: UTC
+    date-format: "yyyy-MM-dd HH:mm:ss"
   mvc:
     hiddenmethod:
       filter:

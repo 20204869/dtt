@@ -12,6 +12,7 @@ import com.example.dtt.service.extract.ExtractTemplateService;
 import com.example.dtt.service.system.ISysUserService;
 import com.example.dtt.utils.StringUtils;
 import com.example.dtt.utils.poi.ExcelUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -141,13 +142,22 @@ public class ExtractConfController extends BaseController {
         return toAjax(confService.deleteConfByIds(ids));
     }
 
+    /**
+     * 导出取数模板数据
+     * @param response
+     * @param conf
+     */
     @Log(title = "抽取模板", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('extract:template:export')")
     @PostMapping("/export")
     public void export(HttpServletResponse response, ExtractConf conf) {
         String executeSql = conf.getTemplateSql();
         List<LinkedHashMap<String, Object>> sqlResult = templateService.templateResult(executeSql);
+        if (CollectionUtils.isEmpty(sqlResult)) {
+            return;
+        }
         String fileName = conf.getTemplateName();
-        ExcelUtils.exportExcel2007(response, sqlResult, fileName);
+       // ExcelUtils.exportExcel2007(response, sqlResult, fileName);
+        ExcelUtils.exportExcel(response,sqlResult,fileName);
     }
 }
