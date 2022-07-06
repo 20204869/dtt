@@ -5,6 +5,8 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -35,6 +37,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static Date getNowDate()
     {
         return new Date();
+    }
+
+    public static String getCurrentTime(String format) {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
     }
 
     /**

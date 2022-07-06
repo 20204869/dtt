@@ -91,7 +91,6 @@ public class ExcelUtils {
             List<String> strField = strField(list);
             // 一个List<Object> 代表一行 （核心：Map<String, Object> 转成 List<String>）
             List<List<Object>> data = list.stream().map(o1 -> trans(o1, strField)).collect(Collectors.toList());
-
             String filename = fileName + ".xlsx";
             try (OutputStream outputStream = response.getOutputStream()) {
                 // 设置名称

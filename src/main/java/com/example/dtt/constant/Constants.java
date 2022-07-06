@@ -26,6 +26,11 @@ public final class Constants {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     /**
+     * date format of yyyyMMddHHmmss
+     */
+    public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+
+    /**
      * UTF-8 字符集
      */
     public static final String UTF8 = "UTF-8";

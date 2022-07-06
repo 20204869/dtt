@@ -91,13 +91,7 @@
              </template>
           </el-table-column>
         </el-table>
-        <pagination
-          v-show="total>0"
-          :total="total"
-          :page.sync="queryParams.pageNum"
-          :limit.sync="queryParams.pageSize"
-          @pagination="getList"
-        />
+
       </template>
       <template v-else-if="1===number">
        <el-tabs type="border-card" style="height: 99%">
@@ -119,7 +113,9 @@
         </el-tabs>
       </template>
       <template v-else-if="2===number">
-         <span>暂无</span>
+        <div>
+          <textarea style="width:100% " rows="50 " disabled="disabled">{{queryLogs.sqlLog}}</textarea>
+        </div>
       </template>
       </div>
       <div class="left" style="visibility: hidden;">
@@ -138,7 +134,7 @@
 </template>
 <script>
 import { treeselect , getTableList ,colList } from "@/api/map/meta";
-import { historyQuery , addQuery ,executeSql } from "@/api/query/query";
+import { historyQuery , addQuery ,executeSql,queryLog } from "@/api/query/query";
 
 import { exportExcelByDom, export_json_to_excel } from "@/utils/Export2Excel";
 
@@ -158,7 +154,9 @@ import 'codemirror/addon/hint/sql-hint.js'
 
 import sqlFormatter from "sql-formatter";
 import SqlEditor from "@/components/SqlEditor";
+
 const MIN_HEIGHT = 200
+
 export default {
   name: "Table",
   components: {
@@ -208,6 +206,8 @@ export default {
       name: undefined,
       dbName: undefined,
       tableName: undefined,
+      //执行日志
+      queryLogs:undefined,
       // 表单参数
       cols: undefined,
       dbNameShow:"Hive",
@@ -370,27 +370,37 @@ export default {
     },
     //执行SQL
     doExecutorSql() {
+      this.number = 2;
+      this.columns=[];
+      this.sqlExecuting = true;
       if(this.code ==  "" ){
         this.$modal.msgError("执行SQL不能为空！");
+        this.sqlExecuting = false;
+        this.number = 0;
        } else {
+       //执行过程中查询日志
+       queryLog().then(response => {
+          this.queryLogs = response.log;
+        });
         this.form.querySql = this.code;
         //保存执行的SQL语句
         addQuery(this.form).then(response => {
-          this.open = false;
+            this.open = false;
         });
         //执行SQL查询
         executeSql(this.form).then(response => {
-            this.sqlResult = response.sqlResult;
-            const obj = { ...this.sqlResult[0] }
-              for(let key in obj) {
-                this.columns.push({
-                 label: key,
-                 value: key
-                })
-              }
-            this.number = 1;
-            this.open = false;
-        });
+               this.sqlResult = response.sqlResult;
+               const obj = { ...this.sqlResult[0] }
+               for(let key in obj) {
+                 this.columns.push({
+                    label: key,
+                    value: key
+                    })
+                 }
+               this.number = 1;
+               this.open = false;
+               this.sqlExecuting = false;
+            });
       }
      },
     //取消执行SQL

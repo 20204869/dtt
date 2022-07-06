@@ -70,7 +70,7 @@
                     <artifactId>poi-ooxml-schemas</artifactId>
                 </exclusion>
             </exclusions>
-            <version>2.2.10</version>
+            <version>3.0.5</version>
         </dependency>
 
         <!--CSV工具-->

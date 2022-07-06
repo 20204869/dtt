@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dtt.mapper.file.FileMapper">
+
+	<resultMap type="com.example.dtt.domain.entity.file.Resource" id="FileResult">
+		<id     property="id"       column="id"      />
+		<result property="fileName"       column="file_name"      />
+		<result property="pid"       column="pid"      />
+		<result property="fullName"       column="full_name"      />
+		<result property="isDirectory"        column="is_directory"        />
+		<result property="remark"   column="remark"  />
+		<result property="size"   column="size"  />
+		<result property="createBy"   column="create_by"  />
+		<result property="updateBy"   column="update_by"  />
+		<result property="updateTime"   column="update_time"  />
+		<result property="createTime"   column="create_time"  />
+	</resultMap>
+
+	<!--创建文件夹-->
+	<insert id="createDirectory" parameterType="com.example.dtt.domain.entity.file.Resource">
+ 		insert into sys_file(
+ 			<if test="fileName != null and fileName != ''">file_name,</if>
+			<if test="pid != null and pid != ''">pid,</if>
+			<if test="fullName != null and fullName != ''">full_name,</if>
+ 			<if test="isDirectory != null and isDirectory != ''">is_directory,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+			<if test="size != null and size != ''">size,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+		create_time
+ 		)values(
+ 			<if test="pid != null and pid !=''">#{pid},</if>
+ 			<if test="fileName != null and fileName != ''">#{fileName},</if>
+			<if test="fullName != null and fullName != ''">#{fullName},</if>
+			<if test="isDirectory != null">#{isDirectory},</if>
+ 			<if test="remark != null and remark != ''">#{remark},</if>
+			<if test="size != null and size != ''">#{size},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+ 			sysdate()
+ 		)
+	</insert>
+
+	<select id="fileList" parameterType="Resource" resultMap="FileResult">
+		select id,file_name,is_directory,remark,size,create_by,update_by,create_time,update_time
+		from sys_file
+		where del_flag = '0'
+		<if test="fileName != null and fileName != ''">
+			AND file_name like concat('%', #{fileName}, '%')
+		</if>
+	</select>
+
+	<!--判断文件是否存在-->
+	<select id="existFile" resultType="java.lang.Boolean">
+		select 1
+		from sys_file
+		where full_name = #{fullName}
+		 and del_flag = '0' limit 1
+	</select>
+
+	<select id="queryResource" resultType="Resource">
+		select
+			id, file_name, remark,size, create_time, update_time,pid, full_name, is_directory,create_by,update_by,create_by
+		from sys_file r
+		where r.del_flag = '0'
+		and r.full_name = #{fullName}
+	</select>
+
+	<select id="selectById" resultType="Resource">
+		select
+			id, file_name, remark,size, create_time, update_time,pid, full_name, is_directory,create_by,update_by,create_by
+		from sys_file
+		where del_flag = '0'
+		  and id = #{id}
+	</select>
+
+	<select id="selectByPId" resultType="Resource">
+		select
+			id, file_name, remark,size, create_time, update_time,pid, full_name, is_directory,create_by,update_by,create_by
+		from sys_file
+		where del_flag = '0'
+		  and pid = #{pid}
+	</select>
+
+	<update id="updateById" parameterType="Resource">
+		update sys_file
+		<set>
+			<if test="size != null and size != ''">size = #{size},</if>
+			<if test="fileName != null and fileName != ''">file_name = #{fileName},</if>
+			<if test="fullName != null and fullName != ''">full_name = #{fullName},</if>
+			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+			<if test="remark != null">remark = #{remark},</if>
+			update_time = sysdate()
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="listFileByIds" resultType="Resource">
+		select
+		id, file_name, remark,size, create_time, update_time,pid, full_name, is_directory,create_by,update_by,create_by
+		from sys_file
+		where del_flag = '0'
+		where id in
+		<foreach collection="resIds" item="i" open="(" close=")" separator=",">
+			#{i}
+		</foreach>
+	</select>
+
+	<update id="batchUpdateFile" parameterType="java.util.List">
+		<foreach collection="resourceList" item="resource" index="index" open="" close="" separator=";">
+			update sys_file
+			<set>
+				full_name=#{resource.fullName},
+				update_time=#{resource.updateTime}
+			</set>
+			<where>
+				id=#{resource.id}
+			</where>
+		</foreach>
+	</update>
+
+	<select id="listChildren" resultType="java.lang.Integer">
+		select id
+		from sys_file
+		where del_flag = '0' and pid = #{direcotyId}
+	</select>
+
+	<delete id="deleteIds" parameterType="java.lang.Integer">
+		update sys_file set del_flag = '1' where id in
+		<foreach collection="resIds" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="selectBatchIds" parameterType="java.lang.Integer">
+		select
+		from sys_file
+		where del_flag = '0' where id in
+		<foreach collection="resIds" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+
+</mapper>

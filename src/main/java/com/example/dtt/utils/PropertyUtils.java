@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import static com.example.dtt.constant.Constants.COMMON_PROPERTIES_PATH;
@@ -42,6 +44,21 @@ public class PropertyUtils {
         });
     }
 
+    /**
+     * get all properties with specified prefix, like: fs.
+     *
+     * @param prefix prefix to search
+     * @return all properties with specified prefix
+     */
+    public static Map<String, String> getPrefixedProperties(String prefix) {
+        Map<String, String> matchedProperties = new HashMap<>();
+        for (String propName : properties.stringPropertyNames()) {
+            if (propName.startsWith(prefix)) {
+                matchedProperties.put(propName, properties.getProperty(propName));
+            }
+        }
+        return matchedProperties;
+    }
     /**
      * get property value
      *

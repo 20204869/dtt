@@ -39,8 +39,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="dbId != null and dbId != '' ">
 			AND t.DB_ID = #{dbId}
 		</if>
-		<!-- 数据范围过滤 -->
-		${params.dataScope}
 	</select>
 
 	<select id="tableListBydbId" parameterType="Long" resultMap="TableResult">

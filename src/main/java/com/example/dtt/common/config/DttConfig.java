@@ -118,4 +118,13 @@ public class DttConfig
     public static String getUploadPath() {
         return getProfile() + "/upload/";
     }
+
+    /**
+     * 获取上传路径
+     *
+     * @return
+     */
+    public static String getFilePath() {
+        return getProfile() + "/file/";
+    }
 }

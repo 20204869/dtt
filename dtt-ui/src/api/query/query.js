@@ -8,7 +8,7 @@ export function historyQuery() {
   })
 }
 
-// 新增用户
+// 新增查询记录
 export function addQuery(data) {
   return request({
     url: '/query/history',
@@ -17,11 +17,19 @@ export function addQuery(data) {
   })
 }
 
-
+//执行查询
 export function executeSql(data) {
   return request({
     url: '/query/history/excuteSql',
     method: 'post',
     data:data
+  })
+}
+
+//查询执行日志
+export function queryLog() {
+  return request({
+    url: '/query/history/log',
+    method: 'get'
   })
 }

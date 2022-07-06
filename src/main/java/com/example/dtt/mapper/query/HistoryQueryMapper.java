@@ -2,6 +2,7 @@ package com.example.dtt.mapper.query;
 
 
 import com.example.dtt.domain.entity.query.HistoryQuery;
+import com.example.dtt.domain.entity.query.QueryLog;
 
 import java.util.List;
 
@@ -26,5 +27,12 @@ public interface HistoryQueryMapper {
      * @return
      */
     int saveQuery(HistoryQuery historyQuery);
+
+    /**
+     * 查询执行日志
+     * @param userName
+     * @return
+     */
+    QueryLog logByUserName(String userName);
 
 }

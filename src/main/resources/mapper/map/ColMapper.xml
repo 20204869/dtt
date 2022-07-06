@@ -16,6 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		INNER JOIN SDS b on a.CD_ID = b.CD_ID
 		INNER JOIN TBLS c on b.SD_ID = c.SD_ID
 		where c.TBL_ID= #{tableId}
+		ORDER BY INTEGER_IDX
 	</select>
 
 	<select id="selectColByTblName" parameterType="String" resultMap="ColResult">
@@ -24,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			INNER JOIN TBLS c on b.SD_ID = c.SD_ID
 			LEFT JOIN DBS d on c.DB_ID=d.DB_ID
 		where CONCAT(d.`NAME`,'.',c.TBL_NAME)= #{tableName}
+		ORDER BY INTEGER_IDX
 	</select>
 
 
@@ -32,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				INNER JOIN SDS b on a.CD_ID = b.CD_ID
 				INNER JOIN TBLS c on b.SD_ID = c.SD_ID
 		where c.TBL_ID= #{tableId}
+		ORDER BY INTEGER_IDX
 	</select>
 
 </mapper>

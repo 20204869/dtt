@@ -1,5 +1,6 @@
 package com.example.dtt.domain.entity.extract;
 
+import com.example.dtt.annotation.Excel;
 import com.example.dtt.domain.BaseEntity;
 
 /**

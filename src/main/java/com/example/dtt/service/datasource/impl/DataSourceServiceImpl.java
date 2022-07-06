@@ -1,16 +1,14 @@
 package com.example.dtt.service.datasource.impl;
 
 import com.example.dtt.constant.datasource.Constants;
-import com.example.dtt.constant.datasource.Status;
+import com.example.dtt.constant.Status;
 import com.example.dtt.datasource.common.BaseDataSourceParamDTO;
 import com.example.dtt.datasource.common.DataSourceClientProvider;
 import com.example.dtt.datasource.common.datasource.BaseConnectionParam;
 import com.example.dtt.datasource.common.datasource.ConnectionParam;
 import com.example.dtt.domain.AjaxResult;
 import com.example.dtt.domain.entity.datasource.DataSource;
-import com.example.dtt.domain.entity.system.SysUser;
 import com.example.dtt.enums.DbType;
-import com.example.dtt.exception.GlobalException;
 import com.example.dtt.mapper.datasource.DataSourceMapper;
 import com.example.dtt.service.datasource.DataSourceService;
 import com.example.dtt.utils.JSONUtils;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

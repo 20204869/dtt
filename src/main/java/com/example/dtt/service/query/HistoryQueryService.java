@@ -2,7 +2,9 @@ package com.example.dtt.service.query;
 
 
 import com.example.dtt.domain.entity.query.HistoryQuery;
+import com.example.dtt.domain.entity.query.QueryLog;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -26,4 +28,18 @@ public interface HistoryQueryService {
      * @return
      */
     int saveQuery(HistoryQuery historyQuery);
+
+    /**
+     * 根据传入的执行SQL获取查询结果
+     * @param executeSql
+     * @return
+     */
+    List<LinkedHashMap<String,Object>> runHive(String userName,String executeSql);
+
+
+    /**
+     * 查询执行日志
+     * @return
+     */
+    QueryLog logByUserName(String userName);
 }

@@ -1,8 +1,8 @@
 <template>
 <div>
-  <div class="hello">
+ <!-- <div class="hello">
     <notice :message="message"></notice>
-  </div>
+  </div> -->
   <div class="page-box">
     <div class="item">
       <div class="left">

@@ -19,8 +19,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<if test="dbName != null and dbName != ''">
 			AND NAME like concat('%', #{dbName}, '%')
 		</if>
-		<!-- 数据范围过滤 -->
-		${params.dataScope}
 	</select>
 
 </mapper>

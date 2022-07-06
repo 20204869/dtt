@@ -10,6 +10,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="times"     column="times" />
 	</resultMap>
 
+	<resultMap type="com.example.dtt.domain.entity.query.QueryLog" id="LogResult">
+		<result property="userName"     column="user_name" />
+		<result property="sqlLog"     column="sql_log" />
+		<result property="yarnId"     column="yarn_id" />
+	</resultMap>
+
 	<select id="historyQueryByUserName" parameterType="String" resultMap="HistoryQueryResult">
 		SELECT CONCAT('(',IF(ABS(TimeStampDiff(MINUTE,NOW(),create_time)) <![CDATA[<]]> 60,CONCAT(ABS(TimeStampDiff(MINUTE,NOW(),create_time)),'分钟前'),IF(ABS(TimeStampDiff(HOUR,NOW(),create_time)) <![CDATA[<]]> 24 ,CONCAT(ABS(TimeStampDiff(HOUR,NOW(),create_time)),'小时前'),CONCAT(TimeStampDiff(DAY,create_time,NOW()),'天前'))),')') as times,query_sql FROM history_query
 		WHERE executor=#{executor}
@@ -28,5 +34,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		sysdate()
 		)
 	</insert>
+
+	<select id="logByUserName" parameterType="String" resultMap="LogResult">
+		select yarn_id,user_name,sql_log
+		from hive_query_log
+		where user_name = #{userName}
+	</select>
 
 </mapper>
